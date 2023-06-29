@@ -24,6 +24,11 @@
                   <q-item-label>Table </q-item-label>
                </q-item-section>
             </q-item>
+            <q-item clickable v-ripple to="/message">
+               <q-item-section>
+                  <q-item-label>공통 메세지 </q-item-label>
+               </q-item-section>
+            </q-item>
             <q-item clickable v-ripple to="/axios">
                <q-item-section>
                   <q-item-label>AXIOS</q-item-label>

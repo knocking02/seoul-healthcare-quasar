@@ -1,13 +1,13 @@
-import axios from "axios";
+import axios from 'axios'
+import { useMessageModalStore } from '../../stores/messageModal'
 
 // axios default 설정 추가 (header, timeout...... )
 axios.defaults.timeout = 40000
 
 const seviceAxios = {
-
    process(axiosFunc) {
       // 로딩바 Start
-
+      const modalMessageStore = useMessageModalStore()
       return new Promise((resolve, reject) => {
          axiosFunc
             .then((data) => {
@@ -16,6 +16,10 @@ const seviceAxios = {
             .catch((error) => {
                // 에러 처리
                reject(error)
+               modalMessageStore.open({
+                  type: 'error',
+                  message: error.message,
+               })
             })
             .finally(() => {
                // 로딩바 End
@@ -38,16 +42,12 @@ const seviceAxios = {
    delete(url, param = {}) {
       return this.process(axios.delete(url, { params: param }))
    },
-   
-   // header 정보 추가
-   setHeaders() {
 
-   },
+   // header 정보 추가
+   setHeaders() {},
 
    // 토큰 정보 추가
-   setTokens() {
-
-   }
+   setTokens() {},
 }
 
 export default seviceAxios

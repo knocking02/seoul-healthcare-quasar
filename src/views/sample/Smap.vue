@@ -9,6 +9,12 @@
             <textarea cols="30" rows="39" style="font-size: 0.8em">{{ selectedPoints }}</textarea>
          </div>
       </div>
+      <q-inner-loading
+         :showing="isLoading"
+         label="Please wait..."
+         label-class="text-teal"
+         label-style="font-size: 1.1em"
+      ></q-inner-loading>
    </q-page>
 
    <!-- <div>
@@ -30,6 +36,7 @@ import { getCurrentInstance, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { loadScript, unloadScript } from 'vue-plugin-load-script'
 
 const { proxy } = getCurrentInstance()
+const isLoading = ref(false)
 
 const currentPosition = ref([37.56649, 126.97831]) // 사용자 현재 위치. default: 서울시청
 const selectedPoints = ref([]) // 마커 좌표..
@@ -42,6 +49,7 @@ let lineLayer = null // polyline 객체
 let polylineLayers = [] // polyline 객체
 
 const createMap = () => {
+   isLoading.value = true
    loadScript('http://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapJs&key=')
       .then(() => {
          map = L.map('map_', {
@@ -72,8 +80,10 @@ const createMap = () => {
             setSelectedPoints(e.latlng)
             createMarker(e.latlng)
          })
+         isLoading.value = false
       })
       .catch((error) => {
+         isLoading.value = false
          console.log(error)
       })
 }

@@ -8,6 +8,7 @@ import AmdChart from '@/views/sample/AmdChart.vue'
 import Smap from '@/views/sample/Smap.vue'
 import Tab from '@/views/sample/Tab.vue'
 import Table from '@/views/sample/Table.vue'
+import Message from '@/views/sample/Message.vue'
 
 const router = createRouter({
    history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +71,14 @@ const router = createRouter({
                component: Table,
                meta: {
                   name: 'Table Test',
+               },
+            },
+            {
+               path: '/message',
+               name: 'message',
+               component: Message,
+               meta: {
+                  name: 'Message Test',
                },
             },
             { path: '/notfound', component: PageNotFound },
