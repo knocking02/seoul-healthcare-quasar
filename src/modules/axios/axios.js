@@ -1,5 +1,7 @@
 import axios from 'axios'
-import { useMessageModalStore } from '../../stores/messageModal'
+import { getCurrentInstance } from 'vue'
+
+// const { proxy } = getCurrentInstance()
 
 // axios default 설정 추가 (header, timeout...... )
 axios.defaults.timeout = 40000
@@ -7,7 +9,6 @@ axios.defaults.timeout = 40000
 const seviceAxios = {
    process(axiosFunc) {
       // 로딩바 Start
-      const modalMessageStore = useMessageModalStore()
       return new Promise((resolve, reject) => {
          axiosFunc
             .then((data) => {
@@ -16,10 +17,7 @@ const seviceAxios = {
             .catch((error) => {
                // 에러 처리
                reject(error)
-               modalMessageStore.open({
-                  type: 'error',
-                  message: error.message,
-               })
+               //proxy.$dialog.open('error', error.message)
             })
             .finally(() => {
                // 로딩바 End

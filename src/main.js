@@ -9,9 +9,9 @@ import axios from './modules/axios'
 import util from './modules/utils/util'
 import constant from './modules/utils/constant'
 import validator from './modules/utils/validator'
+import dialog from './modules/utils/dialog'
 import LoadScript from 'vue-plugin-load-script'
-import { Quasar } from 'quasar'
-import { Notify } from '/node_modules/quasar/dist/quasar.esm.js'
+import { Quasar, Notify, Dialog, Loading, Cookies, LocalStorage, SessionStorage } from 'quasar'
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
@@ -27,9 +27,17 @@ app.use(axios)
 app.use(util)
 app.use(constant)
 app.use(validator)
+app.use(dialog)
 app.use(LoadScript)
 app.use(Quasar, {
-   plugins: { Notify },
+   plugins: {
+      Notify,
+      Dialog,
+      Loading,
+      Cookies,
+      LocalStorage,
+      SessionStorage,
+   },
 })
 
 app.mount('#app')
