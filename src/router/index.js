@@ -9,6 +9,7 @@ import Smap from '@/views/sample/Smap.vue'
 import Tab from '@/views/sample/Tab.vue'
 import Table from '@/views/sample/Table.vue'
 import Message from '@/views/sample/Message.vue'
+import Form from '@/views/sample/Form.vue'
 
 const router = createRouter({
    history: createWebHistory(import.meta.env.BASE_URL),
@@ -79,6 +80,14 @@ const router = createRouter({
                component: Message,
                meta: {
                   name: 'Message Test',
+               },
+            },
+            {
+               path: '/form',
+               name: 'form',
+               component: Form,
+               meta: {
+                  name: 'Form Test',
                },
             },
             { path: '/notfound', component: PageNotFound },

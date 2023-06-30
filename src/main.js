@@ -8,6 +8,7 @@ import router from './router'
 import axios from './modules/axios'
 import util from './modules/utils/util'
 import constant from './modules/utils/constant'
+import validator from './modules/utils/validator'
 import LoadScript from 'vue-plugin-load-script'
 import { Quasar } from 'quasar'
 import { Notify } from '/node_modules/quasar/dist/quasar.esm.js'
@@ -25,6 +26,7 @@ app.use(router)
 app.use(axios)
 app.use(util)
 app.use(constant)
+app.use(validator)
 app.use(LoadScript)
 app.use(Quasar, {
    plugins: { Notify },

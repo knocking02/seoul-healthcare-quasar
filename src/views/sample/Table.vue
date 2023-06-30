@@ -12,7 +12,6 @@
             selection="multiple"
             v-model:selected="selected"
             v-model:pagination="pagination"
-            hide-pagination
             :loading="loading"
          >
             <template v-slot:top-right>
@@ -35,9 +34,9 @@
                <div class="full-width row flex-center text-accent q-gutter-sm">No datas....</div>
             </template>
          </q-table>
-         <div class="row justify-center q-mt-md">
+         <!--div class="row justify-center q-mt-md">
             <q-pagination v-model="pagination.page" color="grey-8" :max="pagesNumber" size="sm"></q-pagination>
-         </div>
+         </!--div -->
 
          <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
 

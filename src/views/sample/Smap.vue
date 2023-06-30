@@ -1,8 +1,17 @@
 <template>
    <q-page padding>
       <div class="row">
+         <div class="col">
+            <div class="q-pa-md q-gutter-sm">
+               <q-btn color="primary" label="일반지도" @click="onMapChange('BASEMAP_GEN')"></q-btn>
+               <q-btn color="primary" label="위성지도" @click="onMapChange('BASEMAP_SATE')"></q-btn>
+               <q-btn color="primary" label="Marker 삭제" @click="onClearMarker"></q-btn>
+            </div>
+         </div>
+      </div>
+      <div class="row">
          <div class="col-10">
-            <div id="map_" style="height: 700px"></div>
+            <div id="map_" style="height: 100%"></div>
          </div>
          <div class="col-2" style="padding-left: 10px">
             <div class="text-h6">총거리 {{ totalDistant }} m</div>
@@ -16,19 +25,6 @@
          label-style="font-size: 1.1em"
       ></q-inner-loading>
    </q-page>
-
-   <!-- <div>
-      <h4>S-Map Test</h4>
-      <b-button @click="onMapChange('BASEMAP_GEN')" class="m-md-1">일반지도</b-button>
-      <b-button @click="onMapChange('BASEMAP_SATE')" class="m-md-1">항공지도</b-button>
-      <b-button @click="onClearMarker" class="m-md-1">Marker 삭제</b-button>
-      <div style="display: flex; padding-top: 5px">
-         <div style="padding-left: 15px">
-            <h6>총거리 {{ totalDistant }} m</h6>
-            <textarea cols="30" rows="35" style="font-size: 0.8em">{{ selectedPoints }}</textarea>
-         </div>
-      </div>
-   </div> -->
 </template>
 
 <script setup>
