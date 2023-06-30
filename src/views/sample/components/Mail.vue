@@ -22,10 +22,15 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+
 const props = defineProps({
    title: {
       type: String,
    },
+})
+onMounted(() => {
+   console.log('Mail')
 })
 </script>
 

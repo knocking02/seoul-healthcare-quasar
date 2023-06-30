@@ -21,11 +21,11 @@
 </template>
 
 <script setup>
-import { range } from 'lodash'
+import { _range } from 'lodash/range'
 import { useCounterStore } from '../../stores/counter'
 
 const title = 'hello~~~~'
-const lodashTest = range(1, 3)
+const lodashTest = _range(1, 3)
 const store = useCounterStore()
 </script>
 
