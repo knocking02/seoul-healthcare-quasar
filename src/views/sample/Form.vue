@@ -34,7 +34,6 @@ const name = ref(null)
 const age = ref(null)
 const accept = ref(false)
 
-// 추후 공통함수로 이동
 const validator = {
    name: [(val) => proxy.$validator.checkEmpty(val, 'Please input name')],
    age: [
