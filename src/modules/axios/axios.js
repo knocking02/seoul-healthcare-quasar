@@ -17,7 +17,10 @@ const seviceAxios = {
             .catch((error) => {
                // 에러 처리
                reject(error)
-               proxy.$dialog.open('error', error.message)
+               proxy.$dialog.open({
+                  type: 'error',
+                  message: error.message,
+               })
             })
             .finally(() => {
                // 로딩바 End

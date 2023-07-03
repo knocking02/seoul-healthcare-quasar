@@ -13,10 +13,14 @@
 <script setup>
 import { getCurrentInstance } from 'vue'
 
-const { proxy } = getCurrentInstance()
+const proxy = getCurrentInstance().proxy
+console.log(proxy)
 
 const alertDialog = () => {
-   proxy.$dialog.open('alert', 'Some message..')
+   proxy.$dialog.open({
+      type: 'alert',
+      message: 'Some message..',
+   })
 }
 
 const createMember = () => {
@@ -24,11 +28,18 @@ const createMember = () => {
 }
 
 const confirm = () => {
-   proxy.$dialog.open('confirm', 'Would you like to turn on the wifi?', createMember)
+   proxy.$dialog.open({
+      type: 'confirm',
+      message: 'Would you like to turn on the wifi?',
+      callFnc: createMember,
+   })
 }
 
 const error = () => {
-   proxy.$dialog.open('error', '403 Error')
+   proxy.$dialog.open({
+      type: 'error',
+      message: '403 Error',
+   })
 }
 </script>
 

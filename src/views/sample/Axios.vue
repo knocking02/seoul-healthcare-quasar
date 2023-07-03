@@ -24,15 +24,15 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 import { useCounterStore } from '../../stores/counter'
 
+const axios = inject('$axios')
 const data = ref([])
-const { proxy } = getCurrentInstance()
 const store = useCounterStore()
 
 const getData = async () => {
-   await proxy.$axios.get('/json/test.json').then((res) => {
+   await axios.get('/json/test.json').then((res) => {
       data.value = res.data
    })
 }

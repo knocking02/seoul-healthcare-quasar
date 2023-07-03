@@ -1,4 +1,5 @@
 import PageNotFound from '../views/error/PageNotFound.vue'
+import Login from '../views/Login/Login.vue'
 import MainLayout from '../components/layout/MainLayout.vue'
 import Main from '../views/main/Main.vue'
 import Axios from '@/views/sample/Axios.vue'
@@ -14,6 +15,10 @@ import Date from '@/views/sample/Date.vue'
 const routes = [
    {
       path: '/',
+      component: Login,
+   },
+   {
+      path: '/main',
       component: MainLayout,
       children: [
          {

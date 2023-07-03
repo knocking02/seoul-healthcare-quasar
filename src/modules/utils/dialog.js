@@ -2,18 +2,18 @@ import { Dialog } from 'quasar'
 import CustomDialog from '@/components/dialog/CustomDialog.vue'
 
 const dialog = {
-   open(type, message, callFnc) {
+   open({ ...options }) {
       Dialog.create({
          component: CustomDialog,
 
          componentProps: {
-            type: type,
-            message: message,
+            type: options.type,
+            message: options.message,
          },
       })
          .onOk(() => {
-            if (type == 'confirm' && typeof callFnc === 'function') {
-               callFnc()
+            if (options.type == 'confirm' && typeof options.callFnc === 'function') {
+               options.callFnc()
             }
          })
          .onCancel(() => {
