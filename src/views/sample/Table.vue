@@ -167,7 +167,7 @@ const getDatas = () => {
 
 onMounted(() => {
    loading.value = true
-   setTimeout(getDatas, 1000)
+   getDatas()
 })
 </script>
 

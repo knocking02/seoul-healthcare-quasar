@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { _range } from 'lodash/range'
+import _range from 'lodash/range'
 import { useCounterStore } from '../../stores/counter'
 
 const title = 'hello~~~~'
