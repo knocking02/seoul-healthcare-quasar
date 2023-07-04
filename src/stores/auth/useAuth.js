@@ -8,11 +8,11 @@ export const useAuthStore = defineStore({
       user: SessionStorage.getItem('user'),
    }),
    actions: {
-      async login(id, password) {
+      async login(id, password, authType) {
          try {
             // TOTO : axios api login check
 
-            if (id.value !== 'admin' || password.value !== '1234') {
+            if (id !== 'admin' || password !== '1234') {
                SessionStorage.remove('user')
                this.$dialog.open({
                   type: 'error',
@@ -24,7 +24,12 @@ export const useAuthStore = defineStore({
                   name: '홍길동',
                   mobile: '01012345678',
                })
-               router.push('/main')
+
+               if (authType === 'admin') {
+                  router.push('/admin')
+               } else {
+                  router.push('/manager')
+               }
             }
          } catch (error) {
             this.$dialog.open({

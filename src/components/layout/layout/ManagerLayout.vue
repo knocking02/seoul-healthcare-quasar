@@ -1,10 +1,10 @@
 <template>
    <q-layout view="hHh lpR fFf">
-      <Header></Header>
-      <Nav></Nav>
+      <Header title="Manager" class="bg-secondary"></Header>
+      <ManagerNav></ManagerNav>
 
       <q-page-container>
-         <router-view />
+         <slot></slot>
       </q-page-container>
 
       <Footer></Footer>
@@ -13,6 +13,6 @@
 
 <script setup>
 import Header from '@/components/layout/header/Header.vue'
-import Nav from './nav/Nav.vue'
-import Footer from './footer/Footer.vue'
+import ManagerNav from '../nav/ManagerNav.vue'
+import Footer from '../footer/Footer.vue'
 </script>

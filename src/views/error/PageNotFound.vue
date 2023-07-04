@@ -2,7 +2,7 @@
 
 <template>
    <q-page padding>
-      <div class="text-h4">Page Not Found page</div>
+      <div class="text-h4">Page Not Found</div>
    </q-page>
 </template>
 

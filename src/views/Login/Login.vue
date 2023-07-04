@@ -12,6 +12,8 @@
                         <q-form class="q-gutter-md">
                            <q-input square filled clearable v-model="id" type="text" label="id" />
                            <q-input square filled clearable v-model="password" type="password" label="password" />
+                           <q-radio v-model="authType" val="admin" label="Administrator"></q-radio>
+                           <q-radio v-model="authType" val="manager" label="Manager"></q-radio>
                         </q-form>
                      </q-card-section>
                      <q-card-actions class="q-px-md">
@@ -38,14 +40,17 @@
 <script setup>
 import { ref } from 'vue'
 import useStore from '../../stores'
+import { useQuasar } from 'quasar'
 
+const $q = useQuasar()
 const id = ref('admin')
 const password = ref('1234')
+const authType = ref('admin')
 
 const login = async () => {
-   localStorage.removeItem('user') // login test
+   $q.sessionStorage.remove('user') // login test
    const store = useStore()
-   await store.auth.login(id, password)
+   await store.auth.login(id.value, password.value, authType.value)
 }
 </script>
 

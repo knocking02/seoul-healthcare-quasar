@@ -1,13 +1,9 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
-    <div>
-        <h1>This is an About page</h1>        
-    </div>
+   <q-page padding>
+      <div class="text-h4">About page</div>
+   </q-page>
 </template>
 
-<style>
-
-</style>
+<style></style>

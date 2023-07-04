@@ -231,7 +231,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
    // 지도 개체 해제, 관련 모든 이벤트 제거
-   map.remove()
+   if (map) map.remove()
 
    // load된 script 제거
    unloadScript('http://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapJs&key=')

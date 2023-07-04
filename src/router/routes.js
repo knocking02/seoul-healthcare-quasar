@@ -1,6 +1,5 @@
 import PageNotFound from '../views/error/PageNotFound.vue'
 import Login from '../views/Login/Login.vue'
-import MainLayout from '../components/layout/MainLayout.vue'
 import Main from '../views/main/Main.vue'
 import Axios from '@/views/sample/Axios.vue'
 import Util from '@/views/sample/Util.vue'
@@ -12,15 +11,20 @@ import Message from '@/views/sample/Message.vue'
 import Form from '@/views/sample/Form.vue'
 import Date from '@/views/sample/Date.vue'
 import Pagination from '@/views/sample/Pagination.vue'
+import ManagerMain from '@/views/main/ManagerMain.vue'
+import About from '@/views/about/About.vue'
 
 const routes = [
    {
-      path: '/',
+      path: '/login',
       component: Login,
+      meta: {
+         name: 'Login',
+         layout: 'DefaultLayout',
+      },
    },
    {
-      path: '/main',
-      component: MainLayout,
+      path: '/admin',
       children: [
          {
             path: '',
@@ -31,7 +35,7 @@ const routes = [
             },
          },
          {
-            path: '/axios',
+            path: '/admin/axios',
             name: 'axios',
             component: Axios,
             meta: {
@@ -39,7 +43,7 @@ const routes = [
             },
          },
          {
-            path: '/util',
+            path: '/admin/util',
             name: 'util',
             component: Util,
             meta: {
@@ -47,7 +51,7 @@ const routes = [
             },
          },
          {
-            path: '/amdchart',
+            path: '/admin/amdchart',
             name: 'amdchart',
             component: AmdChart,
             meta: {
@@ -55,7 +59,7 @@ const routes = [
             },
          },
          {
-            path: '/smap',
+            path: '/admin/smap',
             name: 'smap',
             component: Smap,
             meta: {
@@ -63,7 +67,7 @@ const routes = [
             },
          },
          {
-            path: '/tab',
+            path: '/admin/tab',
             name: 'tab',
             component: Tab,
             meta: {
@@ -71,7 +75,7 @@ const routes = [
             },
          },
          {
-            path: '/table',
+            path: '/admin/table',
             name: 'table',
             component: Table,
             meta: {
@@ -79,7 +83,7 @@ const routes = [
             },
          },
          {
-            path: '/pagination',
+            path: '/admin/pagination',
             name: 'pagination',
             component: Pagination,
             meta: {
@@ -87,7 +91,7 @@ const routes = [
             },
          },
          {
-            path: '/message',
+            path: '/admin/message',
             name: 'message',
             component: Message,
             meta: {
@@ -95,7 +99,7 @@ const routes = [
             },
          },
          {
-            path: '/form',
+            path: '/admin/form',
             name: 'form',
             component: Form,
             meta: {
@@ -103,17 +107,48 @@ const routes = [
             },
          },
          {
-            path: '/date',
+            path: '/admin/date',
             name: 'date',
             component: Date,
             meta: {
                name: 'Date Test',
             },
          },
-         { path: '/notfound', component: PageNotFound },
-         { path: '/:catchAll(.*)', redirect: '/notfound' },
       ],
    },
+   {
+      path: '/manager',
+      children: [
+         {
+            path: '',
+            name: 'ManagerMain',
+            component: ManagerMain,
+            meta: {
+               name: 'Manager Main',
+               layout: 'ManagerLayout',
+            },
+         },
+         {
+            path: '/manager/about',
+            name: 'about',
+            component: About,
+            meta: {
+               name: 'About Test',
+               layout: 'ManagerLayout',
+            },
+         },
+      ],
+   },
+   {
+      path: '/notfound',
+      component: PageNotFound,
+      meta: {
+         name: 'Page Not Found',
+         layout: 'ErrorLayout',
+      },
+   },
+   { path: '/:catchAll(.*)', redirect: '/notfound' },
+   { path: '/', redirect: '/login' },
 ]
 
 export default routes

@@ -2,7 +2,7 @@
 
 <template>
    <q-page padding>
-      <div class="text-h4">Main page</div>
+      <div class="text-h4">Administrator Main page</div>
    </q-page>
 </template>
 
