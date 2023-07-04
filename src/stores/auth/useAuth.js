@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
-import router from '../router'
+import router from '../../router'
+import { LocalStorage, SessionStorage } from 'quasar'
 
 export const useAuthStore = defineStore({
    id: 'useAuth',
    state: () => ({
-      user: localStorage.getItem('user'),
+      user: SessionStorage.getItem('user'),
    }),
    actions: {
       async login(id, password) {
@@ -12,13 +13,13 @@ export const useAuthStore = defineStore({
             // TOTO : axios api login check
 
             if (id.value !== 'admin' || password.value !== '1234') {
-               localStorage.removeItem('user')
+               SessionStorage.remove('user')
                this.$dialog.open({
                   type: 'error',
                   message: 'Incorrect login ID or password',
                })
             } else {
-               localStorage.setItem('user', {
+               SessionStorage.set('user', {
                   id: id,
                   name: '홍길동',
                   mobile: '01012345678',
@@ -35,7 +36,7 @@ export const useAuthStore = defineStore({
    },
    logout() {
       user = null
-      localStorage.removeItem('user')
+      SessionStorage.remove('user')
       router.push('/')
    },
 })

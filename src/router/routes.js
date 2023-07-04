@@ -11,6 +11,7 @@ import Table from '@/views/sample/Table.vue'
 import Message from '@/views/sample/Message.vue'
 import Form from '@/views/sample/Form.vue'
 import Date from '@/views/sample/Date.vue'
+import Pagination from '@/views/sample/Pagination.vue'
 
 const routes = [
    {
@@ -75,6 +76,14 @@ const routes = [
             component: Table,
             meta: {
                name: 'Table Test',
+            },
+         },
+         {
+            path: '/pagination',
+            name: 'pagination',
+            component: Pagination,
+            meta: {
+               name: 'Pagination Test',
             },
          },
          {

@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from './routes'
 import { Loading } from 'quasar'
-import { useAuthStore } from '@/stores/useAuth'
 
 const router = createRouter({
    history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,12 +22,6 @@ router.afterEach((to, from) => {
 
 // login check ....
 const beforeCheck = (to, from, next) => {
-   // const authStore = useAuthStore()
-   // if (!authStore.user) {
-   //    //next({name: 'login'})
-   // } else {
-   //    next()
-   // }
    next()
 }
 

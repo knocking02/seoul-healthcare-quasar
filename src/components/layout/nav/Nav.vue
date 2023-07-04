@@ -24,6 +24,11 @@
                   <q-item-label>Table </q-item-label>
                </q-item-section>
             </q-item>
+            <q-item clickable v-ripple to="/pagination">
+               <q-item-section>
+                  <q-item-label>Pagination </q-item-label>
+               </q-item-section>
+            </q-item>
             <q-item clickable v-ripple to="/form">
                <q-item-section>
                   <q-item-label>Form </q-item-label>

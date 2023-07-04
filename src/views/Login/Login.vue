@@ -37,15 +37,15 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '../../stores/useAuth'
+import useStore from '../../stores'
 
 const id = ref('admin')
 const password = ref('1234')
 
 const login = async () => {
    localStorage.removeItem('user') // login test
-   const authStore = useAuthStore()
-   await authStore.login(id, password)
+   const store = useStore()
+   await store.auth.login(id, password)
 }
 </script>
 
