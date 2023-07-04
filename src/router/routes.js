@@ -17,6 +17,7 @@ import About from '@/views/about/About.vue'
 const routes = [
    {
       path: '/login',
+      name: 'Login',
       component: Login,
       meta: {
          name: 'Login',
@@ -28,7 +29,7 @@ const routes = [
       children: [
          {
             path: '',
-            name: 'main',
+            name: 'Main',
             component: Main,
             meta: {
                name: 'Main',
@@ -36,7 +37,7 @@ const routes = [
          },
          {
             path: '/admin/axios',
-            name: 'axios',
+            name: 'Axios',
             component: Axios,
             meta: {
                name: 'Axios Test',
@@ -44,7 +45,7 @@ const routes = [
          },
          {
             path: '/admin/util',
-            name: 'util',
+            name: 'Util',
             component: Util,
             meta: {
                name: 'Util Test',
@@ -52,7 +53,7 @@ const routes = [
          },
          {
             path: '/admin/amdchart',
-            name: 'amdchart',
+            name: 'Amdchart',
             component: AmdChart,
             meta: {
                name: 'amdChart Test',
@@ -60,7 +61,7 @@ const routes = [
          },
          {
             path: '/admin/smap',
-            name: 'smap',
+            name: 'Smap',
             component: Smap,
             meta: {
                name: 'S-Map Test',
@@ -68,7 +69,7 @@ const routes = [
          },
          {
             path: '/admin/tab',
-            name: 'tab',
+            name: 'Tab',
             component: Tab,
             meta: {
                name: 'Tab Test',
@@ -76,7 +77,7 @@ const routes = [
          },
          {
             path: '/admin/table',
-            name: 'table',
+            name: 'Table',
             component: Table,
             meta: {
                name: 'Table Test',
@@ -84,7 +85,7 @@ const routes = [
          },
          {
             path: '/admin/pagination',
-            name: 'pagination',
+            name: 'Pagination',
             component: Pagination,
             meta: {
                name: 'Pagination Test',
@@ -92,7 +93,7 @@ const routes = [
          },
          {
             path: '/admin/message',
-            name: 'message',
+            name: 'Message',
             component: Message,
             meta: {
                name: 'Message Test',
@@ -100,7 +101,7 @@ const routes = [
          },
          {
             path: '/admin/form',
-            name: 'form',
+            name: 'Form',
             component: Form,
             meta: {
                name: 'Form Test',
@@ -108,7 +109,7 @@ const routes = [
          },
          {
             path: '/admin/date',
-            name: 'date',
+            name: 'Date',
             component: Date,
             meta: {
                name: 'Date Test',
@@ -130,7 +131,7 @@ const routes = [
          },
          {
             path: '/manager/about',
-            name: 'about',
+            name: 'About',
             component: About,
             meta: {
                name: 'About Test',

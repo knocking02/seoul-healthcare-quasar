@@ -48,7 +48,7 @@ const password = ref('1234')
 const authType = ref('admin')
 
 const login = async () => {
-   $q.sessionStorage.remove('user') // login test
+   //  $q.sessionStorage.remove('user') // login test
    const store = useStore()
    await store.auth.login(id.value, password.value, authType.value)
 }
