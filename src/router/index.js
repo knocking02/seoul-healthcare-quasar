@@ -24,7 +24,6 @@ router.afterEach((to, from) => {
 
 // login check ....
 const beforeCheck = (to, from, next) => {
-   console.log('sdfsdfsdfsfd')
    const store = useStore()
    if (!store.auth.user && to.name !== 'Login') {
       next({ name: 'Login' })
