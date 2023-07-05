@@ -10,11 +10,20 @@
             </q-avatar>
             {{ title }}
          </q-toolbar-title>
+         <q-btn label="Logout" @click="onLogout"></q-btn>
       </q-toolbar>
    </q-header>
 </template>
 <script setup>
+import useStore from '@/stores'
+
 defineProps(['title'])
+
+const store = useStore()
+
+const onLogout = () => {
+   store.auth.logout()
+}
 </script>
 
 <style></style>

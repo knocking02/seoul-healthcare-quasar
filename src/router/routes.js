@@ -13,6 +13,7 @@ import Date from '@/views/sample/Date.vue'
 import Pagination from '@/views/sample/Pagination.vue'
 import ManagerMain from '@/views/main/ManagerMain.vue'
 import About from '@/views/about/About.vue'
+import SmapApi from '@/views/sample/SmapApi.vue'
 
 const routes = [
    {
@@ -22,6 +23,7 @@ const routes = [
       meta: {
          name: 'Login',
          layout: 'DefaultLayout',
+         isNotAuthCheck: true,
       },
    },
    {
@@ -65,6 +67,14 @@ const routes = [
             component: Smap,
             meta: {
                name: 'S-Map Test',
+            },
+         },
+         {
+            path: '/admin/smap-api',
+            name: 'SmapApi',
+            component: SmapApi,
+            meta: {
+               name: 'S-Map API Test',
             },
          },
          {
@@ -146,6 +156,7 @@ const routes = [
       meta: {
          name: 'Page Not Found',
          layout: 'ErrorLayout',
+         isNotAuthCheck: true,
       },
    },
    { path: '/:catchAll(.*)', redirect: '/notfound' },

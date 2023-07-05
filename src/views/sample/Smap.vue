@@ -76,6 +76,12 @@ const createMap = () => {
             setSelectedPoints(e.latlng)
             createMarker(e.latlng)
          })
+
+         // var tileUrl = "https://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=getTileMap&key=bf5ab1d4a3294328a5957ac14244eb25&URL=http://98.33.2.95:7070/MapAppServer/Service?timg=emap_ldong/{z}/{j}/{k}/{x}_{y}.png";  //타일 url
+
+         // var_orverUserImageTaggingLayer = new L.Proj.TileLayer.DAWULGIS(tileUrl,{maxZoom:13, opacity:1, zIndex:3});
+         // map.addLayer(_orverUserImageTaggingLayer);
+
          isLoading.value = false
       })
       .catch((error) => {
@@ -108,24 +114,38 @@ const setSelectedPoints = ({ lat, lng }) => {
 
 /** Marker 생성 */
 const createMarker = ({ lat, lng }) => {
+   let content = selectedPoints.value[selectedPoints.value.length - 1].dst + 'm<br/>총 : ' + totalDistant.value + 'm'
    let marker = new L.Marker(new L.LatLng(lat, lng), {
       icon: new L.Icon({
          iconUrl: '/images/icons/pin_2.png',
          iconAnchor: [11, 30], // 오프셋 (핀의 끝이 좌표로 매칭하기 위해 적용)
       }),
+      title: content,
    }).addTo(map)
 
-   let content = selectedPoints.value[selectedPoints.value.length - 1].dst + 'm <br/>총 : ' + totalDistant.value + 'm'
    marker.bindPopup(content, { minWidth: 20, offset: [0, -30] })
    marker.togglePopup()
+   console.log(marker)
+   console.log(marker.getRotationAngle())
 
-   // marker.on('click', function(e) {
-   // 	alert('ok')
+   // marker.on('click', function (e) {
+   //    alert('ok')
    // })
 
    markers.push(marker)
 
+   testBound()
+
    createPolyline()
+}
+
+/** 바운드 테스트 */
+const testBound = () => {
+   let southwest = L.latLng(40.712, -74.227)
+   let northEast = L.latLng(40.774, -74.125)
+   let bounds = L.latLngBounds(southwest, northEast)
+   console.log(bounds.getWest())
+   console.log(bounds.getEast())
 }
 
 /** marker 삭제 */
@@ -188,7 +208,10 @@ const createPolyline = () => {
       return [item.lat, item.lng]
    })
 
-   let polylineLayer = L.polyline(latlngs, { color: 'blue' }).addTo(map)
+   let polylineLayer = L.polyline(latlngs, {
+      color: 'blue',
+      weight: 4,
+   }).addTo(map)
    polylineLayers.push(polylineLayer)
    //map.fitBounds(polyline.getBounds());
 }
@@ -234,6 +257,7 @@ onUnmounted(() => {
    if (map) map.remove()
 
    // load된 script 제거
+
    unloadScript('http://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapJs&key=')
       .then(() => {
          console.log('map unload')

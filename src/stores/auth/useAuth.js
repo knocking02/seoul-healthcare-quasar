@@ -10,7 +10,7 @@ export const useAuthStore = defineStore(
 
       async function login(id, password, authType) {
          try {
-            // TOTO : axios api login check
+            // TODO : axios api login check
 
             if (id !== 'admin' || password !== '1234') {
                user.value = null
@@ -45,5 +45,9 @@ export const useAuthStore = defineStore(
 
       return { user, login, logout }
    },
-   { persist: true },
+   {
+      persist: {
+         storage: sessionStorage,
+      },
+   },
 )

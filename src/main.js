@@ -49,5 +49,4 @@ app.use(Quasar, {
 })
 
 app.provide('$axios', axios)
-
 app.mount('#app')
