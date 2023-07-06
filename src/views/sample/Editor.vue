@@ -2,6 +2,7 @@
    <q-page padding>
       <div class="q-pa-md q-gutter-sm">
          <q-editor
+            ref="editor"
             v-model="qeditor"
             :dense="$q.screen.lt.md"
             height="500px"
@@ -83,7 +84,8 @@
 <script setup>
 import { ref } from 'vue'
 
-const qeditor = ref('<pre>Check out the two different types of dropdowns' + ' in each of the "Align" buttons.</pre> ')
+const editor = ref(null)
+const qeditor = ref(null)
 const definitions = {
    insert_img: {
       tip: 'Insert Image',
@@ -93,7 +95,6 @@ const definitions = {
 }
 
 function insertImg() {
-   // create an input file element to open file dialog
    const input = document.createElement('input')
    input.type = 'file'
    input.accept = '.png, .jpg' // file extensions allowed
@@ -108,8 +109,9 @@ function insertImg() {
       reader.onloadend = function () {
          dataUrl = reader.result
 
-         // append result to the body of your post
-         qeditor.value += '<div><img src="' + dataUrl + '" /></div>'
+         //qeditor.value += '<div><img src="' + dataUrl + '" /></div>'
+         editor.value.runCmd('insertHtml', '<div><img src="' + dataUrl + '" /></div>')
+         console.log(editor.value)
       }
       reader.readAsDataURL(file)
    }
