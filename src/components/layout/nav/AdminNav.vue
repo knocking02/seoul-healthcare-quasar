@@ -29,6 +29,11 @@
                   <q-item-label>Pagination </q-item-label>
                </q-item-section>
             </q-item>
+            <q-item clickable v-ripple to="/admin/editor">
+               <q-item-section>
+                  <q-item-label>Editor </q-item-label>
+               </q-item-section>
+            </q-item>
             <q-item clickable v-ripple to="/admin/form">
                <q-item-section>
                   <q-item-label>Form </q-item-label>

@@ -14,6 +14,7 @@ import Pagination from '@/views/sample/Pagination.vue'
 import ManagerMain from '@/views/main/ManagerMain.vue'
 import About from '@/views/about/About.vue'
 import SmapApi from '@/views/sample/SmapApi.vue'
+import Editor from '@/views/sample/Editor.vue'
 
 const routes = [
    {
@@ -114,6 +115,16 @@ const routes = [
             component: Pagination,
             meta: {
                name: 'Pagination Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
+            },
+         },
+         {
+            path: '/admin/editor',
+            name: 'Editor',
+            component: Editor,
+            meta: {
+               name: 'Editor Test',
                authType: 'admin',
                layout: 'AdminLayout',
             },
