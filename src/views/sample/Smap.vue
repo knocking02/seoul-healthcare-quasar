@@ -10,12 +10,39 @@
          </div>
       </div>
       <div class="row">
-         <div class="col-10">
-            <div id="map_" style="height: 100%"></div>
+         <div class="col-7">
+            <div id="map_" style="height: 600px"></div>
          </div>
-         <div class="col-2" style="padding-left: 10px">
-            <div class="text-h6">총거리 {{ totalDistant }} m</div>
-            <textarea cols="30" rows="39" style="font-size: 0.8em">{{ selectedPoints }}</textarea>
+         <div class="col-5" style="padding-left: 10px">
+            <q-card-section>
+               <div class="text-h6">총거리 {{ totalDistant }}m, 총걸음 {{ totalWalkings.toFixed(1) }}</div>
+               <div class="text-subtitle2">예상 시간 : {{ totalTimes }}분</div>
+            </q-card-section>
+
+            <q-separator />
+
+            <q-card-section>
+               <q-markup-table>
+                  <thead>
+                     <tr>
+                        <th class="text-center">좌표</th>
+                        <th class="text-center">주소</th>
+                        <th class="text-right">거리(m)</th>
+                        <th class="text-right">예상걸음수</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr v-for="point in selectedPoints">
+                        <td class="text-left">lat: {{ point.lat }}<br />lng: {{ point.lng }}</td>
+                        <td class="text-left">{{ point.address.NEW_ADDR }}<br />{{ point.address.LEGAL_ADDR }}</td>
+                        <td class="text-right">{{ point.dst.toFixed(1) }}</td>
+                        <td class="text-right">{{ point.walkings }}</td>
+                     </tr>
+                  </tbody>
+               </q-markup-table>
+            </q-card-section>
+            <!--div class="text-h6">총거리 {{ totalDistant }} m</!--div>
+            <textarea cols="30" rows="39" style="font-size: 0.8em">{{ selectedPoints }}</textarea -->
          </div>
       </div>
       <q-inner-loading
@@ -28,16 +55,19 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, onUnmounted, ref, reactive, inject } from 'vue'
 import { loadScript, unloadScript } from 'vue-plugin-load-script'
 
-const { proxy } = getCurrentInstance()
 const isLoading = ref(false)
+const axios = inject('$axios')
 
 const currentPosition = ref([37.56649, 126.97831]) // 사용자 현재 위치. default: 서울시청
 const selectedPoints = ref([]) // 마커 좌표..
 const totalDistant = ref(0) // 마커 총 거리
+const totalWalkings = ref(0) // 예상 걸음
 
+const totalTimes = computed(() => ((totalDistant.value / 4000) * 60).toFixed(1)) // 에상 시간(분)
+// 1.4 km
 /** S-MAP 불러오기 */
 let map = null // map 객체
 let markers = [] // marker
@@ -72,8 +102,8 @@ const createMap = () => {
          var slider = new L.Control.Zoomslider({ position: 'topright' })
          map.addControl(slider)
 
-         map.on('click', (e) => {
-            setSelectedPoints(e.latlng)
+         map.on('click', async (e) => {
+            await setSelectedPoints(e.latlng)
             createMarker(e.latlng)
          })
 
@@ -93,22 +123,52 @@ const createMap = () => {
 /** 일반지도, 위성지도 Change */
 const onMapChange = (mapType) => BaseMapChange(map, L.Dawul[mapType])
 
+/** 좌표로 주소정보 가져오기 */
+const getAddressInfo = async (lat, lng) => {
+   let address = null
+   let param = {
+      cmd: 'getReverseGeocoding',
+      key: '',
+      address_type: 'S',
+      coord_x: lng,
+      coord_y: lat,
+      req_lang: 'KOR',
+      res_lang: 'KOR',
+   }
+   await axios.get('https://map.seoul.go.kr/smgis/apps/geocoding.do', param).then((res) => {
+      address = res.data.head
+   })
+
+   return address
+}
+
 /** 좌표 정보로 거리 계산 및 정보 저장 */
-const setSelectedPoints = ({ lat, lng }) => {
+const setSelectedPoints = async ({ lat, lng }) => {
    let distance = 0
+   let walkings = 0
+   let address = null
    if (selectedPoints.value.length > 0) {
       let selectedPoint = selectedPoints.value[selectedPoints.value.length - 1]
       distance = getDistance([selectedPoint.lat, selectedPoint.lng], [lat, lng])
       totalDistant.value += distance
+      walkings = getWalkings(distance)
+      totalWalkings.value += walkings
    } else {
       totalDistant.value = 0
       distance = 0
+      totalWalkings.value = 0
+      walkings = 0
    }
+
+   address = (await getAddressInfo(lat, lng)) || {}
+   console.log(address)
 
    selectedPoints.value.push({
       lat: lat,
       lng: lng,
+      address: address,
       dst: distance,
+      walkings: walkings,
    })
 }
 
@@ -125,16 +185,13 @@ const createMarker = ({ lat, lng }) => {
 
    marker.bindPopup(content, { minWidth: 20, offset: [0, -30] })
    marker.togglePopup()
-   console.log(marker)
-   console.log(marker.getRotationAngle())
-
    // marker.on('click', function (e) {
    //    alert('ok')
    // })
 
    markers.push(marker)
 
-   testBound()
+   //testBound()
 
    createPolyline()
 }
@@ -152,6 +209,8 @@ const testBound = () => {
 const onClearMarker = () => {
    // 클릭한 좌표 모두 삭제
    selectedPoints.value = []
+   totalDistant.value = 0
+   totalWalkings.value = 0
    // marker 삭제
    for (i = 0; i < markers.length; i++) {
       map.removeLayer(markers[i])
@@ -245,6 +304,11 @@ const getDistance = (a, b) => {
    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
    var d = r * c // Distance in km
    return Math.round(d * 1000)
+}
+
+/** 예상 걸음수 */
+const getWalkings = (dst) => {
+   return (1400 * dst) / 1000
 }
 
 onMounted(async () => {
