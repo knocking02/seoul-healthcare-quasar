@@ -85,7 +85,7 @@
 import { ref } from 'vue'
 
 const editor = ref(null)
-const qeditor = ref(null)
+const qeditor = ref('')
 const definitions = {
    insert_img: {
       tip: 'Insert Image',

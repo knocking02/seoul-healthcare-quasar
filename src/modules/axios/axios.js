@@ -7,7 +7,7 @@ axios.defaults.timeout = 40000
 const seviceAxios = {
    process(axiosFunc) {
       // 로딩바 Start
-      const { proxy } = getCurrentInstance()
+      // const { proxy } = getCurrentInstance()
 
       return new Promise((resolve, reject) => {
          axiosFunc
@@ -17,10 +17,10 @@ const seviceAxios = {
             .catch((error) => {
                // 에러 처리
                reject(error)
-               proxy.$dialog.open({
-                  type: 'error',
-                  message: error.message,
-               })
+               // proxy.$dialog.open({
+               //    type: 'error',
+               //    message: error.message,
+               // })
             })
             .finally(() => {
                // 로딩바 End

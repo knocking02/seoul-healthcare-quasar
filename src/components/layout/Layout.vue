@@ -1,5 +1,5 @@
 <template>
-   <component :is="components[layout]"> <router-view></router-view>> </component>
+   <component :is="components[layout]"> <router-view></router-view> </component>
 </template>
 
 <script setup>
