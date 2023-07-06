@@ -14,9 +14,10 @@ router.beforeEach((to, from, next) => {
 })
 
 router.beforeResolve((to) => {
-   // const store = useStore()
-   // if (store.auth.user && to.fullPath.indexOf('/' + store.auth.user.authType) === -1 && !to.meta.isNotAuthCheck)
-   //    return false
+   const store = useStore()
+   if (store.auth.user && to.meta.authType && store.auth.user.authType !== to.meta.authType) {
+      store.auth.logout()
+   }
 })
 
 router.afterEach((to, from) => {

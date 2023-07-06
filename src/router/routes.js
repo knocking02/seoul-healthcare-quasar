@@ -23,7 +23,6 @@ const routes = [
       meta: {
          name: 'Login',
          layout: 'DefaultLayout',
-         isNotAuthCheck: true,
       },
    },
    {
@@ -35,6 +34,8 @@ const routes = [
             component: Main,
             meta: {
                name: 'Main',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -43,6 +44,8 @@ const routes = [
             component: Axios,
             meta: {
                name: 'Axios Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -51,6 +54,8 @@ const routes = [
             component: Util,
             meta: {
                name: 'Util Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -59,6 +64,8 @@ const routes = [
             component: AmdChart,
             meta: {
                name: 'amdChart Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -67,6 +74,8 @@ const routes = [
             component: Smap,
             meta: {
                name: 'S-Map Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -75,6 +84,8 @@ const routes = [
             component: SmapApi,
             meta: {
                name: 'S-Map API Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -83,6 +94,8 @@ const routes = [
             component: Tab,
             meta: {
                name: 'Tab Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -91,6 +104,8 @@ const routes = [
             component: Table,
             meta: {
                name: 'Table Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -99,6 +114,8 @@ const routes = [
             component: Pagination,
             meta: {
                name: 'Pagination Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -107,6 +124,8 @@ const routes = [
             component: Message,
             meta: {
                name: 'Message Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -115,6 +134,8 @@ const routes = [
             component: Form,
             meta: {
                name: 'Form Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
          {
@@ -123,6 +144,8 @@ const routes = [
             component: Date,
             meta: {
                name: 'Date Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
             },
          },
       ],
@@ -137,6 +160,8 @@ const routes = [
             meta: {
                name: 'Manager Main',
                layout: 'ManagerLayout',
+               authType: 'manager',
+               layout: 'ManagerLayout',
             },
          },
          {
@@ -145,6 +170,8 @@ const routes = [
             component: About,
             meta: {
                name: 'About Test',
+               layout: 'ManagerLayout',
+               authType: 'manager',
                layout: 'ManagerLayout',
             },
          },
@@ -156,7 +183,6 @@ const routes = [
       meta: {
          name: 'Page Not Found',
          layout: 'ErrorLayout',
-         isNotAuthCheck: true,
       },
    },
    { path: '/:catchAll(.*)', redirect: '/notfound' },
