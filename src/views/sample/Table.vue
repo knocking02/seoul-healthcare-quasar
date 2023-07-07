@@ -58,11 +58,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, inject } from 'vue'
+import { ref, onMounted, computed, inject, getCurrentInstance } from 'vue'
 import { exportFile, useQuasar } from 'quasar'
 
 const $q = useQuasar()
-const axios = inject('$axios')
+const { proxy } = getCurrentInstance()
 
 const columns = [
    { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
@@ -160,7 +160,7 @@ const exportTable = () => {
 
 const getDatas = () => {
    loading.value = true
-   axios.get('https://jsonplaceholder.typicode.com/todos').then((res) => {
+   proxy.$axios.sample.getTableDatas().then((res) => {
       rows.value = res.data
       loading.value = false
    })

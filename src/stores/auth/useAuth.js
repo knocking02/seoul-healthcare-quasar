@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import router from '../../router'
-import { SessionStorage } from 'quasar'
+import { dialog } from '@/modules/utils/dialog'
 import { ref } from 'vue'
 
 export const useAuthStore = defineStore(
@@ -14,7 +14,7 @@ export const useAuthStore = defineStore(
 
             if (id !== 'admin' || password !== '1234') {
                user.value = null
-               this.$dialog.open({
+               dialog.open({
                   type: 'error',
                   message: 'Incorrect login ID or password',
                })
@@ -31,7 +31,7 @@ export const useAuthStore = defineStore(
                }
             }
          } catch (error) {
-            this.$dialog.open({
+            dialog.open({
                type: 'alert',
                message: 'Incorrect login ID or password',
             })

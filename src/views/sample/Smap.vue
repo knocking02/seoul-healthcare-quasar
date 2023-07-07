@@ -59,7 +59,7 @@ import { computed, getCurrentInstance, onMounted, onUnmounted, ref, reactive, in
 import { loadScript, unloadScript } from 'vue-plugin-load-script'
 
 const isLoading = ref(false)
-const axios = inject('$axios')
+const { proxy } = getCurrentInstance()
 
 const currentPosition = ref([37.56649, 126.97831]) // 사용자 현재 위치. default: 서울시청
 const selectedPoints = ref([]) // 마커 좌표..
@@ -123,25 +123,6 @@ const createMap = () => {
 /** 일반지도, 위성지도 Change */
 const onMapChange = (mapType) => BaseMapChange(map, L.Dawul[mapType])
 
-/** 좌표로 주소정보 가져오기 */
-const getAddressInfo = async (lat, lng) => {
-   let address = null
-   let param = {
-      cmd: 'getReverseGeocoding',
-      key: '',
-      address_type: 'S',
-      coord_x: lng,
-      coord_y: lat,
-      req_lang: 'KOR',
-      res_lang: 'KOR',
-   }
-   await axios.get('https://map.seoul.go.kr/smgis/apps/geocoding.do', param).then((res) => {
-      address = res.data.head
-   })
-
-   return address
-}
-
 /** 좌표 정보로 거리 계산 및 정보 저장 */
 const setSelectedPoints = async ({ lat, lng }) => {
    let distance = 0
@@ -160,13 +141,16 @@ const setSelectedPoints = async ({ lat, lng }) => {
       walkings = 0
    }
 
-   address = (await getAddressInfo(lat, lng)) || {}
-   console.log(address)
+   await proxy.$axios.smap.useGetAddress(lat, lng).then((res) => {
+      address = res.data.head
+   })
+   //address = (await getAddressInfo(lat, lng)) || {}
+   //console.log(address)
 
    selectedPoints.value.push({
       lat: lat,
       lng: lng,
-      address: address,
+      address: address || {},
       dst: distance,
       walkings: walkings,
    })

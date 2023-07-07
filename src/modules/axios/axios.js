@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getCurrentInstance } from 'vue'
+import { dialog } from '../utils/dialog'
 
 // axios default 설정 추가 (header, timeout...... )
 axios.defaults.timeout = 40000
@@ -7,7 +7,6 @@ axios.defaults.timeout = 40000
 const seviceAxios = {
    process(axiosFunc) {
       // 로딩바 Start
-      // const { proxy } = getCurrentInstance()
 
       return new Promise((resolve, reject) => {
          axiosFunc
@@ -17,10 +16,10 @@ const seviceAxios = {
             .catch((error) => {
                // 에러 처리
                reject(error)
-               // proxy.$dialog.open({
-               //    type: 'error',
-               //    message: error.message,
-               // })
+               dialog.open({
+                  type: 'error',
+                  message: error.message,
+               })
             })
             .finally(() => {
                // 로딩바 End

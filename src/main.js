@@ -6,7 +6,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import router from './router'
-import axios from './modules/axios/axios'
+import axios from './modules/axios'
 import util from './modules/utils/util'
 import constant from './modules/utils/constant'
 import validator from './modules/utils/validator'
@@ -24,14 +24,10 @@ const app = createApp(App)
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-pinia.use(({ store }) => {
-   store.$http = app.config.globalProperties.$http
-   store.$dialog = app.config.globalProperties.$dialog
-})
 
 app.use(pinia)
 app.use(router)
-//app.use(axios)
+app.use(axios)
 app.use(util)
 app.use(constant)
 app.use(validator)
@@ -48,5 +44,5 @@ app.use(Quasar, {
    },
 })
 
-app.provide('$axios', axios)
+//app.provide('$axios', axios)
 app.mount('#app')

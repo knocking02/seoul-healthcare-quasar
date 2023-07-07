@@ -13,7 +13,6 @@ import Date from '@/views/sample/Date.vue'
 import Pagination from '@/views/sample/Pagination.vue'
 import ManagerMain from '@/views/main/ManagerMain.vue'
 import About from '@/views/about/About.vue'
-import SmapApi from '@/views/sample/SmapApi.vue'
 import Editor from '@/views/sample/Editor.vue'
 
 const routes = [
@@ -75,16 +74,6 @@ const routes = [
             component: Smap,
             meta: {
                name: 'S-Map Test',
-               authType: 'admin',
-               layout: 'AdminLayout',
-            },
-         },
-         {
-            path: '/admin/smap-api',
-            name: 'SmapApi',
-            component: SmapApi,
-            meta: {
-               name: 'S-Map API Test',
                authType: 'admin',
                layout: 'AdminLayout',
             },

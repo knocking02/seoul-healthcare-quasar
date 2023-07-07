@@ -1,7 +1,7 @@
 import { Dialog } from 'quasar'
 import CustomDialog from '@/components/dialog/CustomDialog.vue'
 
-const dialog = {
+export const dialog = {
    open({ ...options }) {
       Dialog.create({
          component: CustomDialog,

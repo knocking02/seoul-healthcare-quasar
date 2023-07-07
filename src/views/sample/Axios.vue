@@ -12,15 +12,22 @@
 </template>
 
 <script setup>
-import { inject, onMounted, ref } from 'vue'
+import { getCurrentInstance, inject, onMounted, ref } from 'vue'
 
-const axios = inject('$axios')
+//const axios = inject('$axios')
+const { proxy } = getCurrentInstance()
 const data = ref([])
 
-const getData = async () => {
-   await axios.get('/json/test.json').then((res) => {
-      data.value = res.data
-   })
+const getData = () => {
+   console.log(proxy.$axios)
+   proxy.$axios.sample
+      .getSampleDatas()
+      .then((res) => {
+         data.value = res.data
+      })
+      .catch((error) => {
+         console.log(error)
+      })
 }
 
 onMounted(() => {
