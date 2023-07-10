@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { dialog } from '../utils/dialog'
+import { LocalStorage } from 'quasar'
 
 // axios default 설정 추가 (header, timeout...... )
 axios.defaults.timeout = 40000
@@ -46,8 +47,18 @@ const seviceAxios = {
    // header 정보 추가
    setHeaders() {},
 
-   // 토큰 정보 추가
-   setTokens() {},
+   // header 토큰 정보 추가
+   setTokens(token) {
+      if (token == null) return
+      LocalStorage.set('token', token)
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+   },
+
+   // header 토근 정보 삭제
+   removeTokens(token) {
+      LocalStorage.remove('token')
+      axios.defaults.headers.common['Authorization'] = null
+   },
 }
 
 export default seviceAxios
