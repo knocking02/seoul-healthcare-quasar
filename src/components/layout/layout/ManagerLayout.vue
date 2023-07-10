@@ -4,6 +4,7 @@
       <ManagerNav></ManagerNav>
 
       <q-page-container>
+         <Breadcrumbs homepath="manager"></Breadcrumbs>
          <slot></slot>
       </q-page-container>
 
@@ -15,4 +16,5 @@
 import Header from '@/components/layout/header/Header.vue'
 import ManagerNav from '../nav/ManagerNav.vue'
 import Footer from '../footer/Footer.vue'
+import Breadcrumbs from '../Breadcrumbs.vue'
 </script>
