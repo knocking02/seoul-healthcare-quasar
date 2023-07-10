@@ -45,6 +45,25 @@
             <textarea cols="30" rows="39" style="font-size: 0.8em">{{ selectedPoints }}</textarea -->
          </div>
       </div>
+      <q-dialog v-model="popup" transition-show="rotate" transition-hide="rotate">
+         <q-card>
+            <q-card-section>
+               <div class="text-h6">{{ detail.title }}</div>
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+               <p v-for="n in 5" :key="n">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas
+                  eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus
+                  minima, porro labore.
+               </p>
+            </q-card-section>
+
+            <q-card-actions align="right">
+               <q-btn flat label="Close" color="primary" v-close-popup></q-btn>
+            </q-card-actions>
+         </q-card>
+      </q-dialog>
       <q-inner-loading
          :showing="isLoading"
          label="Please wait..."
@@ -65,6 +84,8 @@ const currentPosition = ref([37.56649, 126.97831]) // 사용자 현재 위치. d
 const selectedPoints = ref([]) // 마커 좌표..
 const totalDistant = ref(0) // 마커 총 거리
 const totalWalkings = ref(0) // 예상 걸음
+const popup = ref(false)
+const detail = ref(null)
 
 const totalTimes = computed(() => ((totalDistant.value / 4000) * 60).toFixed(1)) // 에상 시간(분)
 // 1.4 km
@@ -158,7 +179,8 @@ const setSelectedPoints = async ({ lat, lng }) => {
 
 /** Marker 생성 */
 const createMarker = ({ lat, lng }) => {
-   let content = selectedPoints.value[selectedPoints.value.length - 1].dst + 'm<br/>총 : ' + totalDistant.value + 'm'
+   let pointInfo = selectedPoints.value[selectedPoints.value.length - 1]
+   let content = pointInfo.dst + 'm<br/>총 : ' + totalDistant.value + 'm'
    let marker = new L.Marker(new L.LatLng(lat, lng), {
       icon: new L.Icon({
          iconUrl: '/images/icons/pin_2.png',
@@ -169,9 +191,12 @@ const createMarker = ({ lat, lng }) => {
 
    marker.bindPopup(content, { minWidth: 20, offset: [0, -30] })
    marker.togglePopup()
-   // marker.on('click', function (e) {
-   //    alert('ok')
-   // })
+   marker.on('click', function (e) {
+      detail.value = {
+         title: pointInfo.address.NEW_ADDR,
+      }
+      popup.value = true
+   })
 
    markers.push(marker)
 

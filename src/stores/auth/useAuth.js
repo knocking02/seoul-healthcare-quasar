@@ -27,7 +27,7 @@ export const useAuthStore = defineStore(
                   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXNlci5jb20iLCJpYXQiOjE2Nzg5MjAxMjV9.7agGY4Sx7wWY0vZe25tfsrpIcDUHf5N6XP1W3MfxhWI'
 
                // axios header 정보 셋팅
-               axios.setTokens(sampleToken)
+               axios.setAuthTokens(sampleToken)
 
                // 사용자 정보 가져오기
                getUser(id, authType)
@@ -55,7 +55,7 @@ export const useAuthStore = defineStore(
 
       /** 로그인 정보 삭제 */
       function remove() {
-         axios.removeTokens()
+         axios.removeAuthTokens()
          user.value = null
       }
 

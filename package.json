@@ -12,6 +12,7 @@
    "dependencies": {
       "@amcharts/amcharts5": "^5.3.16",
       "@quasar/extras": "^1.16.4",
+      "@quasar/quasar-ui-qcalendar": "^4.0.0-beta.16",
       "axios": "^1.4.0",
       "lodash": "^4.17.21",
       "pinia": "^2.1.3",

@@ -14,6 +14,7 @@ import Pagination from '@/views/sample/Pagination.vue'
 import ManagerMain from '@/views/main/ManagerMain.vue'
 import About from '@/views/about/About.vue'
 import Editor from '@/views/sample/Editor.vue'
+import Calendar from '@/views/sample/Calendar.vue'
 
 const routes = [
    {
@@ -113,7 +114,7 @@ const routes = [
             name: 'Editor',
             component: Editor,
             meta: {
-               name: 'Editor Test',
+               name: 'Quasar Test',
                authType: 'admin',
                layout: 'AdminLayout',
             },
@@ -144,6 +145,16 @@ const routes = [
             component: Date,
             meta: {
                name: 'Date Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
+            },
+         },
+         {
+            path: '/admin/calendar',
+            name: 'Calendar',
+            component: Calendar,
+            meta: {
+               name: 'Calendar Test',
                authType: 'admin',
                layout: 'AdminLayout',
             },

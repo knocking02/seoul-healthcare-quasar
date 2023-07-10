@@ -8,7 +8,6 @@ axios.defaults.timeout = 40000
 const seviceAxios = {
    process(axiosFunc) {
       // 로딩바 Start
-
       return new Promise((resolve, reject) => {
          axiosFunc
             .then((data) => {
@@ -28,36 +27,47 @@ const seviceAxios = {
       })
    },
 
-   get(url, param = {}) {
-      return this.process(axios.get(url, { params: param }))
+   get(url, param = {}, isAuth = true) {
+      this.setHeaders(isAuth)
+      return this.process(axios.get(url, { params: param }), isAuth)
    },
 
-   post(url, param = {}) {
+   post(url, param = {}, isAuth = true) {
+      this.setHeaders(isAuth)
       return this.process(axios.post(url, param))
    },
 
-   put(url, param = {}) {
+   put(url, param = {}, isAuth = true) {
+      this.setHeaders(isAuth)
       return this.process(axios.put(url, param))
    },
 
-   delete(url, param = {}) {
+   delete(url, param = {}, isAuth = true) {
+      this.setHeaders(isAuth)
       return this.process(axios.delete(url, { params: param }))
    },
 
    // header 정보 추가
-   setHeaders() {},
+   setHeaders(isAuth) {
+      if (isAuth && LocalStorage.getItem('authToken'))
+         axios.defaults.headers.common['Authorization'] = `Bearer ${LocalStorage.getItem('authToken')}`
+      else delete axios.defaults.headers.common.Authorization
+   },
 
    // header 토큰 정보 추가
-   setTokens(token) {
-      if (token == null) return
-      LocalStorage.set('token', token)
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+   setAuthTokens(token) {
+      if (token) {
+         LocalStorage.set('authToken', token)
+         axios.defaults.headers.common['Authorization'] = `Bearer ${LocalStorage.getItem('authToken')}`
+      } else {
+         this.removeAuthTokens()
+      }
    },
 
    // header 토근 정보 삭제
-   removeTokens(token) {
-      LocalStorage.remove('token')
-      axios.defaults.headers.common['Authorization'] = null
+   removeAuthTokens(token) {
+      LocalStorage.remove('authToken')
+      delete axios.defaults.headers.common.Authorization
    },
 }
 

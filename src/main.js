@@ -14,11 +14,16 @@ import dialog from './modules/utils/dialog'
 import LoadScript from 'vue-plugin-load-script'
 import { Quasar, Notify, Dialog, Loading, Cookies, LocalStorage, SessionStorage } from 'quasar'
 
+import testPlugin from './modules/testPlugin'
+
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
 
 // Import Quasar css
 import 'quasar/dist/quasar.css'
+
+import Qcalendar from '@quasar/quasar-ui-qcalendar'
+import '@quasar/quasar-ui-qcalendar/dist/index.css'
 
 const app = createApp(App)
 
@@ -43,6 +48,8 @@ app.use(Quasar, {
       SessionStorage,
    },
 })
+
+app.use(Qcalendar)
 
 //app.provide('$axios', axios)
 app.mount('#app')

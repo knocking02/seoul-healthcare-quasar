@@ -12,7 +12,8 @@ const smap = {
          req_lang: 'KOR',
          res_lang: 'KOR',
       }
-      return axios.get('https://map.seoul.go.kr/smgis/apps/geocoding.do', param)
+
+      return axios.get('https://map.seoul.go.kr/smgis/apps/geocoding.do', param, false)
    },
 }
 
