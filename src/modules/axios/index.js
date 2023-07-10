@@ -1,5 +1,5 @@
-import sampleApi from './sampleApi'
-import smapApi from './smapApi'
+import sampleApi from './api/sampleApi'
+import smapApi from './api/smapApi'
 
 const serviceApi = Object.assign(sampleApi, smapApi)
 

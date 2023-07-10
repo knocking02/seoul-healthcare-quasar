@@ -31,7 +31,7 @@ const confirm = () => {
    proxy.$dialog.open({
       type: 'confirm',
       message: 'Would you like to turn on the wifi?',
-      callFnc: createMember,
+      action: createMember,
    })
 }
 

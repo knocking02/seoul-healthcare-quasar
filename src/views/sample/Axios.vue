@@ -19,7 +19,6 @@ const { proxy } = getCurrentInstance()
 const data = ref([])
 
 const getData = () => {
-   console.log(proxy.$axios)
    proxy.$axios.sample
       .getSampleDatas()
       .then((res) => {

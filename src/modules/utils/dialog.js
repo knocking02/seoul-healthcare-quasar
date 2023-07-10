@@ -12,8 +12,8 @@ export const dialog = {
          },
       })
          .onOk(() => {
-            if (options.type == 'confirm' && typeof options.callFnc === 'function') {
-               options.callFnc()
+            if (options.type == 'confirm' && typeof options.action === 'function') {
+               options.action()
             }
          })
          .onCancel(() => {

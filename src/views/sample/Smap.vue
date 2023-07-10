@@ -162,9 +162,16 @@ const setSelectedPoints = async ({ lat, lng }) => {
       walkings = 0
    }
 
-   await proxy.$axios.smap.useGetAddress(lat, lng).then((res) => {
-      address = res.data.head
-   })
+   isLoading.value = true
+   await proxy.$axios.smap
+      .useGetAddress(lat, lng)
+      .then((res) => {
+         address = res.data.head
+         isLoading.value = false
+      })
+      .catch((error) => {
+         console.log('error', error)
+      })
    //address = (await getAddressInfo(lat, lng)) || {}
    //console.log(address)
 

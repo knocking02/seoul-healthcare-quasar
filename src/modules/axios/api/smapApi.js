@@ -1,4 +1,4 @@
-import axios from './axios'
+import axios from '../axios'
 
 const smap = {
    /** 좌표 => 주소 변환 */
