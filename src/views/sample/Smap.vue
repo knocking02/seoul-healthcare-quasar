@@ -22,24 +22,47 @@
             <q-separator />
 
             <q-card-section>
-               <q-markup-table>
-                  <thead>
+               <q-virtual-scroll
+                  type="table"
+                  style="max-height: 53vh"
+                  :virtual-scroll-item-size="48"
+                  :virtual-scroll-sticky-size-start="48"
+                  :virtual-scroll-sticky-size-end="32"
+                  :items="selectedPoints"
+               >
+                  <template v-slot:before>
+                     <thead class="thead-sticky text-left">
+                        <tr>
+                           <th class="text-center">번호</th>
+                           <th class="text-center">좌표</th>
+                           <th class="text-center">주소</th>
+                           <th class="text-right">거리(m)</th>
+                           <th class="text-right">예상걸음수</th>
+                        </tr>
+                     </thead>
+                  </template>
+
+                  <template v-slot:after>
+                     <thead class="tfoot-sticky text-left">
+                        <tr>
+                           <th class="text-center">번호</th>
+                           <th class="text-center">좌표</th>
+                           <th class="text-center">주소</th>
+                           <th class="text-right">거리(m)</th>
+                           <th class="text-right">예상걸음수</th>
+                        </tr>
+                     </thead>
+                  </template>
+                  <template v-slot="{ item: point, index }">
                      <tr>
-                        <th class="text-center">좌표</th>
-                        <th class="text-center">주소</th>
-                        <th class="text-right">거리(m)</th>
-                        <th class="text-right">예상걸음수</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr v-for="point in selectedPoints">
+                        <td class="text-center">{{ index + 1 }}</td>
                         <td class="text-left">lat: {{ point.lat }}<br />lng: {{ point.lng }}</td>
                         <td class="text-left">{{ point.address.NEW_ADDR }}<br />{{ point.address.LEGAL_ADDR }}</td>
                         <td class="text-right">{{ point.dst.toFixed(1) }}</td>
                         <td class="text-right">{{ point.walkings }}</td>
                      </tr>
-                  </tbody>
-               </q-markup-table>
+                  </template>
+               </q-virtual-scroll>
             </q-card-section>
             <!--div class="text-h6">총거리 {{ totalDistant }} m</!--div>
             <textarea cols="30" rows="39" style="font-size: 0.8em">{{ selectedPoints }}</textarea -->
@@ -167,10 +190,12 @@ const setSelectedPoints = async ({ lat, lng }) => {
       .useGetAddress(lat, lng)
       .then((res) => {
          address = res.data.head
-         isLoading.value = false
       })
       .catch((error) => {
          console.log('error', error)
+      })
+      .finally(() => {
+         isLoading.value = false
       })
    //address = (await getAddressInfo(lat, lng)) || {}
    //console.log(address)
@@ -350,4 +375,20 @@ onUnmounted(() => {
 
 <style scoped>
 @import 'http://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapCss';
+</style>
+
+<style lang="sass" scoped>
+.thead-sticky tr > *,
+.tfoot-sticky tr > *
+  position: sticky
+  opacity: 1
+  z-index: 1
+  background: gray !important
+  color: white
+
+.thead-sticky tr:last-child > *
+  top: 0
+
+.tfoot-sticky tr:first-child > *
+  bottom: 0
 </style>
