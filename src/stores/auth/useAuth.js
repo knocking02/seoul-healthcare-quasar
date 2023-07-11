@@ -16,7 +16,7 @@ export const useAuthStore = defineStore(
          try {
             // TODO : axios api login check ==> get Token
 
-            if (id !== 'admin' || password !== '1234') {
+            if (id !== 'admin' || password !== '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4') {
                dialog.open({
                   type: 'error',
                   message: 'Incorrect login ID or password',

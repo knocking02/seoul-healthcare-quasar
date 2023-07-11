@@ -38,18 +38,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
 import useStore from '../../stores'
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
+const { proxy } = getCurrentInstance()
 const id = ref('admin')
 const password = ref('1234')
 const authType = ref('admin')
 
 const login = async () => {
    const store = useStore()
-   await store.auth.login(id.value, password.value, authType.value)
+   await store.auth.login(id.value, proxy.$SHA256(password.value), authType.value)
 }
 </script>
 
