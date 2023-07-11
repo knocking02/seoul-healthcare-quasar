@@ -2,7 +2,8 @@
    <q-page padding>
       <div class="column">
          <div class="col">
-            <div class="text-h5">Axios Test</div>
+            <div class="text-h5" style="padding-bottom: 20px">Axios Test</div>
+            <div class="text-h7">서울시 등록 휴대폰 조회</div>
             <div class="q-pa-md" style="width: 500px; height: 500px">
                <textarea rows="15" cols="60">{{ data }}</textarea>
             </div>
@@ -18,19 +19,26 @@ import { getCurrentInstance, inject, onMounted, ref } from 'vue'
 const { proxy } = getCurrentInstance()
 const data = ref([])
 
-const getData = () => {
-   proxy.$axios.sample
-      .getSampleDatas()
-      .then((res) => {
-         data.value = res.data
-      })
-      .catch((error) => {
-         console.log(error)
-      })
+// const getData = () => {
+//    proxy.$axios.sample
+//       .getSampleDatas()
+//       .then((res) => {
+//          data.value = res.data
+//       })
+//       .catch((error) => {
+//          console.log(error)
+//       })
+// }
+
+const userPhoneCheck = (id) => {
+   proxy.$axios.sample.getMemberPhoneNum(id).then((res) => {
+      data.value = res.data
+   })
 }
 
 onMounted(() => {
-   getData()
+   //getData()
+   userPhoneCheck('knocking01')
 })
 </script>
 
