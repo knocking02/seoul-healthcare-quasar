@@ -54,6 +54,11 @@
                   <q-item-label>공통 메세지 </q-item-label>
                </q-item-section>
             </q-item>
+            <q-item clickable v-ripple to="/admin/i18n">
+               <q-item-section>
+                  <q-item-label>다국어 변환 </q-item-label>
+               </q-item-section>
+            </q-item>
             <q-item clickable v-ripple to="/admin/axios">
                <q-item-section>
                   <q-item-label>AXIOS</q-item-label>

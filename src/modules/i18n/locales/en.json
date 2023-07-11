@@ -1,0 +1,14 @@
+{
+   "label": {
+      "name": "name"
+   },
+   "title": {
+      "T0001": "Language conversion test"
+   },
+   "message": {
+      "M0001": "Input your {item}, please"
+   },
+   "error": {
+      "internal1": "this is internal 1 error message"
+   }
+}

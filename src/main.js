@@ -13,6 +13,7 @@ import validator from './modules/utils/validator'
 import dialog from './modules/utils/dialog'
 import LoadScript from 'vue-plugin-load-script'
 import sha256 from './modules/utils/sha256'
+import i18n from './modules/i18n'
 import { Quasar, Notify, Dialog, Loading, Cookies, LocalStorage, SessionStorage } from 'quasar'
 
 // Import icon libraries
@@ -49,6 +50,8 @@ app.use(Quasar, {
 })
 app.use(Qcalendar)
 app.use(sha256)
+
+app.use(i18n)
 
 //app.provide('$axios', axios)
 app.mount('#app')

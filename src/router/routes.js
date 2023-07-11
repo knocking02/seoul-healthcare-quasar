@@ -15,6 +15,7 @@ import ManagerMain from '@/views/main/ManagerMain.vue'
 import About from '@/views/about/About.vue'
 import Editor from '@/views/sample/Editor.vue'
 import Calendar from '@/views/sample/Calendar.vue'
+import I18N from '@/views/sample/I18N.vue'
 
 const routes = [
    {
@@ -155,6 +156,16 @@ const routes = [
             component: Calendar,
             meta: {
                name: 'Calendar Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
+            },
+         },
+         {
+            path: '/admin/i18n',
+            name: 'I18N',
+            component: I18N,
+            meta: {
+               name: '다국어 변환 Test',
                authType: 'admin',
                layout: 'AdminLayout',
             },
