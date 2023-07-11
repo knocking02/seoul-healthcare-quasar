@@ -4,15 +4,26 @@
          <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
             <q-input
                filled
-               v-model="name"
-               label="Your name *"
-               hint="Name and surname"
+               v-model="id"
+               label="ID *"
+               hint="영문 숫자 조합 8자리 이상"
                lazy-rules
-               :rules="validator.name"
+               :rules="validator.id"
+            ></q-input>
+            <q-input
+               filled
+               v-model="password"
+               label="PASSWORD *"
+               hint="영문 숫자 특수기호 조합 8자리 이상"
+               lazy-rules
+               :rules="validator.password"
             ></q-input>
 
-            <q-input filled type="number" v-model="age" label="Your age *" lazy-rules :rules="validator.age"></q-input>
-
+            <q-input filled v-model="name" label="NAME *" lazy-rules :rules="validator.name"></q-input>
+            <q-input filled v-model="email" label="EMAIL *" lazy-rules :rules="validator.email"></q-input>
+            <q-input v-model="birth" filled type="date"></q-input>
+            <q-input filled type="number" v-model="age" label="AGE *" lazy-rules :rules="validator.age"></q-input>
+            <q-input v-model="mobile" filled type="tel" label="Mobile *" :rules="validator.mobile"></q-input>
             <q-toggle v-model="accept" label="I accept the license and terms"></q-toggle>
 
             <div>
@@ -33,12 +44,27 @@ const $q = useQuasar()
 const name = ref(null)
 const age = ref(null)
 const accept = ref(false)
+const id = ref(null)
+const password = ref(null)
+const email = ref(null)
+const birth = ref(null)
+const mobile = ref(null)
 
 const validator = {
+   id: [(val) => proxy.$validator.checkEmpty(val, 'Please input id'), (val) => proxy.$validator.checkId(val)],
+   password: [
+      (val) => proxy.$validator.checkEmpty(val, 'Please input password'),
+      (val) => proxy.$validator.checkPassword(val),
+   ],
    name: [(val) => proxy.$validator.checkEmpty(val, 'Please input name')],
    age: [
       (val) => proxy.$validator.checkEmpty(val, 'Please input age'),
       (val) => proxy.$validator.checkAge(val, 'Please type a real age'),
+   ],
+   email: [(val) => proxy.$validator.checkEmpty(val, 'Please input email'), (val) => proxy.$validator.checkEmail(val)],
+   mobile: [
+      (val) => proxy.$validator.checkEmpty(val, 'Please input mobile'),
+      (val) => proxy.$validator.checkMobile(val),
    ],
 }
 
@@ -64,6 +90,11 @@ const onReset = () => {
    name.value = null
    age.value = null
    accept.value = false
+   id.value = null
+   password.value = null
+   birth.value = null
+   email.value = null
+   mobile.value = null
 }
 </script>
 
