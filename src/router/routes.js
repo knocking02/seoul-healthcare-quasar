@@ -16,6 +16,8 @@ import About from '@/views/about/About.vue'
 import Editor from '@/views/sample/Editor.vue'
 import Calendar from '@/views/sample/Calendar.vue'
 import I18N from '@/views/sample/I18N.vue'
+//import i18n from '@/modules/i18n'
+//const { t: $t, d: $d, n: $n } = i18n.global
 
 const routes = [
    {
@@ -121,16 +123,6 @@ const routes = [
             },
          },
          {
-            path: '/admin/message',
-            name: 'Message',
-            component: Message,
-            meta: {
-               name: 'Message Test',
-               authType: 'admin',
-               layout: 'AdminLayout',
-            },
-         },
-         {
             path: '/admin/form',
             name: 'Form',
             component: Form,
@@ -161,11 +153,21 @@ const routes = [
             },
          },
          {
+            path: '/admin/message',
+            name: 'Message',
+            component: Message,
+            meta: {
+               name: '공통 메세지',
+               authType: 'admin',
+               layout: 'AdminLayout',
+            },
+         },
+         {
             path: '/admin/i18n',
             name: 'I18N',
             component: I18N,
             meta: {
-               name: '다국어 변환 Test',
+               name: '다국어 변환',
                authType: 'admin',
                layout: 'AdminLayout',
             },

@@ -2,23 +2,37 @@
    <q-page padding>
       <div class="q-pa-md">
          <div class="column">
-            <div class="col">
+            <div class="col" style="padding: 15px">
                <q-select
                   outlined
-                  v-model="$i18n.locale"
-                  :options="$i18n.availableLocales"
+                  v-model="locale"
+                  :options="supportedLocales"
+                  @update:model-value="Tr.switchLanguage"
                   label="언어선택"
                   style="width: 200px"
                />
             </div>
-            <div class="col">
-               <div class="text-h6">{{ $t('label.name') }}</div>
-               <div class="text-h6">{{ $t('title.T0001') }}</div>
-               <div class="text-h6">{{ $t('message.M0001') }}</div>
-               <div class="text-h6">{{ $t('error.internal1') }}</div>
+            <div class="col" style="padding: 15px">
+               <div class="text-h7">{{ $t('label.name') }}</div>
+               <div class="text-h7">{{ $t('title.T0001') }}</div>
+               <div class="text-h7">{{ $t('message.M0001', { item: t('label.name') }) }}</div>
+               <div class="text-h7">{{ $t('error.internal1') }}</div>
             </div>
-            <div class="col">
+            <q-separator></q-separator>
+            <div class="col" style="padding: 15px">
                <q-btn color="primary" label="Message" @click="alertDialog"></q-btn>
+            </div>
+            <q-separator></q-separator>
+            <div class="col" style="padding: 15px">
+               <div class="text-h7">
+                  숫자와 통화 : {{ $t('message.donations', { donations: $n(100, 'currencyFormat') }) }}
+               </div>
+            </div>
+            <q-separator></q-separator>
+            <div class="col" style="padding: 15px">
+               <div class="text-h7">
+                  날짜와 시간 : {{ $d(new Date(), 'longFormat') }} / {{ $d(new Date(), 'shortFormat') }}
+               </div>
             </div>
          </div>
       </div>
@@ -28,8 +42,14 @@
 <script setup>
 import { getCurrentInstance } from 'vue'
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import Tr from '@/modules/i18n/translation'
+import { LocalStorage } from 'quasar'
+
+const { t, locale } = useI18n()
+const supportedLocales = Tr.supportedLocales
 const { proxy } = getCurrentInstance()
+
+const switchLanguage = (val) => {}
 
 const alertDialog = () => {
    proxy.$dialog.open({

@@ -14,6 +14,7 @@ import dialog from './modules/utils/dialog'
 import LoadScript from 'vue-plugin-load-script'
 import sha256 from './modules/utils/sha256'
 import i18n from './modules/i18n'
+import Tr from './modules/i18n/translation'
 import { Quasar, Notify, Dialog, Loading, Cookies, LocalStorage, SessionStorage } from 'quasar'
 
 // Import icon libraries
@@ -52,6 +53,10 @@ app.use(Qcalendar)
 app.use(sha256)
 
 app.use(i18n)
+
+// 다국어 사용자 설정
+const locale = Tr.getUserLocale()
+Tr.switchLanguage(locale)
 
 //app.provide('$axios', axios)
 app.mount('#app')

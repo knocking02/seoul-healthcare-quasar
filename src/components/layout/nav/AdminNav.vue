@@ -51,12 +51,12 @@
             </q-item>
             <q-item clickable v-ripple to="/admin/message">
                <q-item-section>
-                  <q-item-label>공통 메세지 </q-item-label>
+                  <q-item-label>{{ $t('menu.message') }} </q-item-label>
                </q-item-section>
             </q-item>
             <q-item clickable v-ripple to="/admin/i18n">
                <q-item-section>
-                  <q-item-label>다국어 변환 </q-item-label>
+                  <q-item-label>{{ $t('menu.language') }}</q-item-label>
                </q-item-section>
             </q-item>
             <q-item clickable v-ripple to="/admin/axios">
