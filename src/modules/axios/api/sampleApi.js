@@ -12,7 +12,6 @@ const sample = {
 
    // 서울시 등록 휴대폰 조회
    getMemberPhoneNum(id) {
-      console.log(constant)
       let param = {
          ServiceKey: constant.SEOUL_API_KEY,
          userId: id,

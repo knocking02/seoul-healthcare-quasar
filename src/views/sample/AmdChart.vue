@@ -1,21 +1,15 @@
 <template>
-   <q-page padding>
-      <div class="q-pa-md row items-start q-gutter-md">
-         <q-card class="my-card">
-            <q-card-section>
-               <amd-chart :options="barOptions"></amd-chart>
-            </q-card-section>
-         </q-card>
-         <q-card class="my-card">
-            <q-card-section>
-               <amd-chart :options="lineOptions"></amd-chart>
-            </q-card-section>
-         </q-card>
-         <q-card class="my-card">
-            <q-card-section>
-               <amd-chart :options="pieOptions"></amd-chart>
-            </q-card-section>
-         </q-card>
+   <q-page class="q-pa-sm">
+      <div class="row q-col-gutter-sm q-py-sm">
+         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <amd-chart :options="barOptions"></amd-chart>
+         </div>
+         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <amd-chart :options="lineOptions"></amd-chart>
+         </div>
+         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <amd-chart :options="pieOptions"></amd-chart>
+         </div>
       </div>
    </q-page>
 </template>

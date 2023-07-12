@@ -1,5 +1,4 @@
 <template>
-   <h6>{{ currentChart }}</h6>
    <div style="padding: 15px">
       <component :is="components[currentChart]" :options="options"> </component>
    </div>

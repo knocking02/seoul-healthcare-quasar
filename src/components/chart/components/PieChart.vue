@@ -1,3 +1,12 @@
+<template>
+   <q-card class="no-shadow" bordered>
+      <q-card-section class="text-h6"> Pie Chart </q-card-section>
+      <q-card-section>
+         <div class="chart" ref="chartdiv"></div>
+      </q-card-section>
+   </q-card>
+</template>
+
 <script setup>
 import * as am5 from '@amcharts/amcharts5'
 import * as am5percent from '@amcharts/amcharts5/percent'
@@ -46,15 +55,9 @@ onMounted(() => {
 })
 </script>
 
-<template>
-   <div>
-      <div class="chart" ref="chartdiv"></div>
-   </div>
-</template>
-
 <style scoped>
 .chart {
-   width: 350px;
+   width: 100%;
    height: 350px;
 }
 </style>

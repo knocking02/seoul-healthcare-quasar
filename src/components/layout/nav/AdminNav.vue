@@ -72,7 +72,7 @@
    </q-drawer>
 </template>
 <script setup>
-import { useNav } from './useNav'
+import { toRef } from 'vue'
 
 const props = defineProps({
    leftDrawerOpen: {
@@ -80,6 +80,6 @@ const props = defineProps({
       default: true,
    },
 })
-const { isDrawerOpen } = useNav(props)
+const isDrawerOpen = toRef(props, 'leftDrawerOpen')
 </script>
 <style scoped></style>
