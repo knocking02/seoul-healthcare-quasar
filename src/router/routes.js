@@ -157,7 +157,7 @@ const routes = [
             name: 'Message',
             component: Message,
             meta: {
-               name: '공통 메세지',
+               name: 'menu.message', //'공통 메세지',
                authType: 'admin',
                layout: 'AdminLayout',
             },
@@ -167,7 +167,7 @@ const routes = [
             name: 'I18N',
             component: I18N,
             meta: {
-               name: '다국어 변환',
+               name: 'menu.language', //'다국어 변환',
                authType: 'admin',
                layout: 'AdminLayout',
             },

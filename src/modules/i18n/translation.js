@@ -25,7 +25,7 @@ const Trans = {
 
    getUserLocale() {
       const locale = Trans.getPersistedLocale()
-      return locale ? locale : this.defaultLocale
+      return locale ? locale : Trans.defaultLocale
    },
 
    getPersistedLocale() {

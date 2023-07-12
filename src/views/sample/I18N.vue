@@ -31,7 +31,7 @@
             <q-separator></q-separator>
             <div class="col" style="padding: 15px">
                <div class="text-h7">
-                  날짜와 시간 : {{ $d(new Date(), 'longFormat') }} / {{ $d(new Date(), 'shortFormat') }}
+                  날짜와 시간 : {{ $d(new Date(), 'longFormat') }} && {{ $d(new Date(), 'shortFormat') }}
                </div>
             </div>
          </div>
@@ -43,13 +43,10 @@
 import { getCurrentInstance } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tr from '@/modules/i18n/translation'
-import { LocalStorage } from 'quasar'
 
 const { t, locale } = useI18n()
 const supportedLocales = Tr.supportedLocales
 const { proxy } = getCurrentInstance()
-
-const switchLanguage = (val) => {}
 
 const alertDialog = () => {
    proxy.$dialog.open({

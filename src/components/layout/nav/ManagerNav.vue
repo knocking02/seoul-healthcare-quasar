@@ -1,7 +1,5 @@
-<script setup></script>
-
 <template>
-   <q-drawer show-if-above side="left" bordered>
+   <q-drawer v-model="isDrawerOpen" show-if-above side="left" bordered>
       <div class="q-pa-md" style="max-width: 350px">
          <q-list bordered separator>
             <q-item clickable v-ripple to="/manager/about">
@@ -13,5 +11,16 @@
       </div>
    </q-drawer>
 </template>
+<script setup>
+import { useNav } from './useNav'
+
+const props = defineProps({
+   leftDrawerOpen: {
+      type: Boolean,
+      default: true,
+   },
+})
+const { isDrawerOpen } = useNav(props)
+</script>
 
 <style scoped></style>

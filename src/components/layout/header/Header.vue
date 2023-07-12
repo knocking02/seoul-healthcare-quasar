@@ -2,12 +2,9 @@
    <!-- Navigation -->
    <q-header elevated class="text-white">
       <q-toolbar>
-         <q-btn dense flat round icon="menu" />
+         <q-btn flat dense round @click="toggleLeftDrawer" icon="menu" aria-label="Menu"> </q-btn>
 
          <q-toolbar-title>
-            <q-avatar>
-               <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-            </q-avatar>
             {{ title }}
          </q-toolbar-title>
          <q-btn label="Logout" @click="onLogout"></q-btn>
@@ -16,10 +13,19 @@
 </template>
 <script setup>
 import useStore from '@/stores'
+import { useQuasar } from 'quasar'
+import { ref } from 'vue'
 
 defineProps(['title'])
+const emits = defineEmits(['navOpen'])
 
 const store = useStore()
+const leftDrawerOpen = ref(true)
+
+const toggleLeftDrawer = () => {
+   leftDrawerOpen.value = !leftDrawerOpen.value
+   emits('navOpen', leftDrawerOpen.value)
+}
 
 const onLogout = () => {
    store.auth.logout()

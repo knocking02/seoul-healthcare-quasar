@@ -8,14 +8,16 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
 defineProps(['homepath'])
 
 const router = useRoute()
+const { t, te } = useI18n()
 
 const title = computed(() => {
-   return router.meta.name
+   return router.meta.name && te(router.meta.name) ? t(router.meta.name) : router.meta.name
 })
 </script>
 

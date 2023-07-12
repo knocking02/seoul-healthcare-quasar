@@ -1,7 +1,7 @@
 <template>
-   <q-layout view="hHh lpR fFf">
-      <Header title="Admin"></Header>
-      <AdminNav></AdminNav>
+   <q-layout view="lHh Lpr lFf">
+      <Header title="Admin" @navOpen="open"></Header>
+      <AdminNav :leftDrawerOpen="leftDrawerOpen"></AdminNav>
 
       <q-page-container>
          <Breadcrumbs homepath="admin"></Breadcrumbs>
@@ -17,4 +17,10 @@ import Header from '@/components/layout/header/Header.vue'
 import AdminNav from '../nav/AdminNav.vue'
 import Footer from '../footer/Footer.vue'
 import Breadcrumbs from '../Breadcrumbs.vue'
+import { ref } from 'vue'
+
+const leftDrawerOpen = ref(true)
+const open = (val) => {
+   leftDrawerOpen.value = val
+}
 </script>
