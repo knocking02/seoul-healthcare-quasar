@@ -7,6 +7,7 @@
          <q-toolbar-title>
             {{ title }}
          </q-toolbar-title>
+         <q-btn :label="btnDarkLabel" @click="onChangeMode"></q-btn>
          <q-btn label="Logout" @click="onLogout"></q-btn>
       </q-toolbar>
    </q-header>
@@ -14,18 +15,30 @@
 <script setup>
 import useStore from '@/stores'
 import { useQuasar } from 'quasar'
+import { computed } from 'vue'
 import { ref } from 'vue'
 
 defineProps(['title'])
 const emits = defineEmits(['navOpen'])
 
+const $q = useQuasar()
 const store = useStore()
 const leftDrawerOpen = ref(true)
+const isDark = ref(false)
 
 const toggleLeftDrawer = () => {
    leftDrawerOpen.value = !leftDrawerOpen.value
    emits('navOpen', leftDrawerOpen.value)
 }
+
+const onChangeMode = () => {
+   isDark.value = !isDark.value
+   $q.dark.set(isDark.value)
+}
+
+const btnDarkLabel = computed(() => {
+   return isDark.value ? 'Dark On' : 'Dark Off'
+})
 
 const onLogout = () => {
    store.auth.logout()

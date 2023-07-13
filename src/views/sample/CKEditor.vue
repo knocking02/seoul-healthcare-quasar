@@ -13,10 +13,12 @@ const editorConfig = {}
 
 const onReady = (editor) => {
    // Insert the toolbar before the editable area.
-   editor.ui.view.editable.element.style.height = '500px'
    editor.ui
       .getEditableElement()
       .parentElement.insertBefore(editor.ui.view.toolbar.element, editor.ui.getEditableElement())
+   editor.editing.view.change((writer) => {
+      writer.setStyle('height', '500px', editor.editing.view.document.getRoot())
+   })
 }
 </script>
 
