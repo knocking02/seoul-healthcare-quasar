@@ -26,6 +26,8 @@ import 'quasar/dist/quasar.css'
 import Qcalendar from '@quasar/quasar-ui-qcalendar'
 import '@quasar/quasar-ui-qcalendar/dist/index.css'
 
+import CKEditor from '@ckeditor/ckeditor5-vue'
+
 const app = createApp(App)
 
 const pinia = createPinia()
@@ -51,7 +53,7 @@ app.use(Quasar, {
 })
 app.use(Qcalendar)
 app.use(sha256)
-
+app.use(CKEditor)
 app.use(i18n)
 
 // 다국어 사용자 설정

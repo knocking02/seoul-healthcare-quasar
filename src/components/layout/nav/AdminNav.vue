@@ -32,6 +32,11 @@
                   <q-item-label>Quasar Editor </q-item-label>
                </q-item-section>
             </q-item>
+            <q-item clickable v-ripple to="/admin/ckeditor">
+               <q-item-section>
+                  <q-item-label>CK Editor </q-item-label>
+               </q-item-section>
+            </q-item>
             <q-item clickable v-ripple to="/admin/form">
                <q-item-section>
                   <q-item-label>Form </q-item-label>
