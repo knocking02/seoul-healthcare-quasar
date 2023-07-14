@@ -5,8 +5,8 @@
             <div class="q-pa-md q-gutter-sm">
                <q-btn color="primary" label="일반지도" @click="onMapChange('BASEMAP_GEN')"></q-btn>
                <q-btn color="primary" label="위성지도" @click="onMapChange('BASEMAP_SATE')"></q-btn>
-               <q-btn color="primary" label="Marker 삭제" @click="onClearMarker"></q-btn>
-               <q-btn color="primary" label="코스 불러오기" @click="onLoadPoints"></q-btn>
+               <q-btn color="primary" label="코스 삭제" @click="onRemoveCourse(0)"></q-btn>
+               <q-btn color="primary" label="코스 불러오기" @click="onLoadCourse"></q-btn>
                <q-btn color="primary" label="시청 이동" @click="onMovePoint(37.56649, 126.97831)"></q-btn>
                <q-btn
                   color="primary"
@@ -85,11 +85,16 @@
       </div>
       <q-dialog v-model="popup">
          <q-card class="my-card">
+            <q-card-section class="row items-center q-pb-none">
+               <div class="text-h6">{{ detail.title }}</div>
+               <q-space></q-space>
+               <q-btn icon="close" flat round dense v-close-popup></q-btn>
+            </q-card-section>
+
             <img src="https://cdn.quasar.dev/img/mountains.jpg" />
 
             <q-card-section>
-               <div class="text-h6">{{ detail.title }}</div>
-               <div class="text-subtitle2">서울시 제공</div>
+               <div class="text-subtitle2">추천 관광지</div>
             </q-card-section>
 
             <q-card-section class="q-pt-none">
@@ -113,6 +118,8 @@
 import { computed, getCurrentInstance, onMounted, onUnmounted, ref, reactive, inject } from 'vue'
 import { loadScript, unloadScript } from 'vue-plugin-load-script'
 import { useSmap } from './composable/useSmap'
+import _findIndex from 'lodash/findIndex'
+import { nextTick } from 'vue'
 
 const isLoading = ref(false)
 const { proxy } = getCurrentInstance()
@@ -124,13 +131,14 @@ const totalDistant = ref(0) // 마커 총 거리
 const totalWalkings = ref(0) // 예상 걸음
 const popup = ref(false)
 const detail = ref(null)
+const isShowContextMenu = ref(false)
 
 const totalTimes = computed(() => ((totalDistant.value / 4000) * 60).toFixed(1)) // 에상 시간(분)
 // 1.4 km
 /** S-MAP 불러오기 */
 let map = null // map 객체
 let markers = [] // marker
-let polylineLayers = [] // polyline 객체
+let polylineLayer = null // polyline 객체
 
 const createMap = () => {
    isLoading.value = true
@@ -173,18 +181,43 @@ const createMap = () => {
 /** 일반지도, 위성지도 Change */
 const onMapChange = (mapType) => BaseMapChange(map, L.Dawul[mapType])
 
+/** 마커 팝업 버튼 이벤트 처리 */
+const onMarkerPopupEvent = (type, point, marker) => {
+   console.log(markers)
+   if (type === 'create') {
+      proxy.$dialog.open({
+         type: 'alert',
+         message: '준비중.....',
+      })
+   } else if (type === 'detail') {
+      // 상세보기
+      detail.value = {
+         title: point.address.NEW_ADDR,
+      }
+      popup.value = true
+   } else if (type === 'remove') {
+      const index = _findIndex(markers, { id: marker.id })
+
+      onRemoveCourse(index)
+
+      // polyline 다시 그리기
+      polylineLayer = createPolyline(map, selectedPoints.value)
+   }
+}
+
 const onClickMap = async (e) => {
+   map.closePopup()
    // 포인트 정보 셋팅
-   let pointInfo = await getSelectedPointInfo(e.latlng)
-   selectedPoints.value.push(pointInfo)
+   let point = await getSelectedPointInfo(e.latlng)
+   selectedPoints.value.push(point)
 
    // 마커 그리기
-   let marker = await createMarker(map, pointInfo)
+   let marker = await createMarker(map, point, onMarkerPopupEvent)
    markers.push(marker)
 
    // polyline 그리기
-   let polylineLayer = await createPolyline(map, selectedPoints.value)
-   polylineLayers.push(polylineLayer)
+   if (polylineLayer) map.removeLayer(polylineLayer)
+   polylineLayer = await createPolyline(map, selectedPoints.value)
 }
 
 /** 좌표 정보로 거리 계산 및 정보 저장 */
@@ -238,30 +271,29 @@ const testBound = () => {
    console.log(bounds.getEast())
 }
 
-/** marker 삭제 */
-const onClearMarker = () => {
-   // 클릭한 좌표 모두 삭제
-   selectedPoints.value = []
-   totalDistant.value = 0
-   totalWalkings.value = 0
-   // marker 삭제
-   for (i = 0; i < markers.length; i++) {
-      map.removeLayer(markers[i])
-   }
-   onClearPolyline()
-}
+// 코스 정보 삭제
+const onRemoveCourse = (index = 0) => {
+   if (selectedPoints.value.length > 0) {
+      console.log(index)
+      // 포인트 정보 삭제
+      selectedPoints.value.splice(index, selectedPoints.value.length)
 
-/** polyline 삭제 */
-const onClearPolyline = () => {
-   for (i = 0; i < polylineLayers.length; i++) {
-      map.removeLayer(polylineLayers[i])
+      // 마커 정보 삭제
+      for (i = index; i < markers.length; i++) {
+         map.removeLayer(markers[i])
+      }
+      markers.splice(index, markers.length)
+
+      // Polyline 정보 삭제
+      map.removeLayer(polylineLayer)
+      polylineLayer = null
    }
 }
 
 /** 저장된 point 정보 불러와 marker, polyline 그리기 */
-const onLoadPoints = async () => {
-   // 기존 마커 삭제
-   onClearMarker()
+const onLoadCourse = async () => {
+   // 기존 코스 정보 삭제
+   onRemoveCourse(0)
 
    // 포인트 정보 가져오기
    await proxy.$axios.smap.getPointInfos().then((res) => {
@@ -270,14 +302,12 @@ const onLoadPoints = async () => {
 
    // marker 생성
    selectedPoints.value.forEach((point) => {
-      console.log(point)
-      let marker = createMarker(map, point)
+      let marker = createMarker(map, point, onMarkerPopupEvent)
       markers.push(marker)
    })
 
    // pollyline 생성
-   let polylineLayer = await createPolyline(map, selectedPoints.value)
-   polylineLayers.push(polylineLayer)
+   polylineLayer = await createPolyline(map, selectedPoints.value)
 
    // 첫번째 포인트로 지도 이동
    map.setView([selectedPoints.value[0].lat, selectedPoints.value[1].lng], 9)
@@ -336,6 +366,19 @@ onUnmounted(() => {
 
 <style scoped>
 @import 'http://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapCss';
+.marker_popup {
+   background-color: bisque;
+   padding: 1em;
+   border: solid thin black;
+}
+
+.marker_menu {
+   list-style-type: none;
+   display: flex;
+   padding: 0;
+   margin-bottom: 0;
+   gap: 1em;
+}
 </style>
 
 <style lang="sass" scoped>

@@ -1,30 +1,51 @@
+import { nextTick } from 'vue'
+
 export function useSmap() {
    /** Marker 생성 */
-   const createMarker = (map, pointInfo) => {
-      let content = pointInfo.dst // + 'm<br/>총 : ' + totalDistant.value + 'm'
-      let marker = new L.Marker(new L.LatLng(pointInfo.lat, pointInfo.lng), {
+   const createMarker = (map, point, callback) => {
+      let marker = new L.Marker(new L.LatLng(point.lat, point.lng), {
          icon: new L.Icon({
             iconUrl: '/images/icons/pin_2.png',
             iconAnchor: [11, 30], // 오프셋 (핀의 끝이 좌표로 매칭하기 위해 적용)
          }),
-         title: content,
       }).addTo(map)
 
-      // marker.bindPopup(content, { minWidth: 20, offset: [0, -30] })
-      marker.togglePopup()
-      marker.on('click', function (e) {
-         detail.value = {
-            title: pointInfo.address.NEW_ADDR,
-         }
-         popup.value = true
+      marker.id = Math.random().toString(36).substring(2, 16)
+
+      let addr = point.address.NEW_ADDR || '주소없음'
+      let contents = '<div class="marker_popup">'
+      contents += addr
+      contents += '<div>'
+      contents += '<button id="marker_menu_create">컨텐츠 등록</button>&nbsp;'
+      contents += '<button id="marker_menu_remove">삭제</button>'
+      contents += '</ul>'
+      contents += '</div>'
+
+      marker.bindPopup(contents, { minWidth: 40, offset: [0, -30] }).on('popupopen', (e) => {
+         document.getElementById('marker_menu_create').addEventListener('click', () => callback('create', point))
+         document
+            .getElementById('marker_menu_remove')
+            .addEventListener('click', () => callback('remove', point, marker))
       })
+
+      marker.on('click', (e) => {
+         nextTick(() => {
+            map.closePopup()
+         })
+         callback('detail', point)
+      })
+
+      marker.on('contextmenu', () => {
+         marker.openPopup()
+      })
+      //marker.togglePopup()
 
       return marker
    }
 
    /** Polyline 그리기 */
-   const createPolyline = (map, pointInfos) => {
-      let latlngs = pointInfos.map((item) => {
+   const createPolyline = (map, points) => {
+      let latlngs = points.map((item) => {
          return [item.lat, item.lng]
       })
 
@@ -32,7 +53,6 @@ export function useSmap() {
          color: 'blue',
          weight: 4,
       }).addTo(map)
-      //polylineLayers.push(polylineLayer)
       return polylineLayer
       //map.fitBounds(polyline.getBounds());
    }
