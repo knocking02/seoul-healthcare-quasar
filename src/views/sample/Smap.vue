@@ -6,6 +6,23 @@
                <q-btn color="primary" label="일반지도" @click="onMapChange('BASEMAP_GEN')"></q-btn>
                <q-btn color="primary" label="위성지도" @click="onMapChange('BASEMAP_SATE')"></q-btn>
                <q-btn color="primary" label="Marker 삭제" @click="onClearMarker"></q-btn>
+               <q-btn color="primary" label="코스 불러오기" @click="onLoadPoints"></q-btn>
+               <q-btn color="primary" label="시청 이동" @click="onMovePoint(37.56649, 126.97831)"></q-btn>
+               <q-btn
+                  color="primary"
+                  label="마포 이동"
+                  @click="onMovePoint(37.55072253776177, 126.94952260676664)"
+               ></q-btn>
+               <q-btn
+                  color="primary"
+                  label="강동구 이동"
+                  @click="onMovePoint(37.52987418574927, 127.1327542516944)"
+               ></q-btn>
+               <q-btn
+                  color="primary"
+                  label="여의도 이동"
+                  @click="onMovePoint(37.52368305544433, 126.926996965973)"
+               ></q-btn>
             </div>
          </div>
       </div>
@@ -64,27 +81,23 @@
                   </template>
                </q-virtual-scroll>
             </q-card-section>
-            <!--div class="text-h6">총거리 {{ totalDistant }} m</!--div>
-            <textarea cols="30" rows="39" style="font-size: 0.8em">{{ selectedPoints }}</textarea -->
          </div>
       </div>
-      <q-dialog v-model="popup" transition-show="rotate" transition-hide="rotate">
-         <q-card>
+      <q-dialog v-model="popup">
+         <q-card class="my-card">
+            <img src="https://cdn.quasar.dev/img/mountains.jpg" />
+
             <q-card-section>
                <div class="text-h6">{{ detail.title }}</div>
+               <div class="text-subtitle2">서울시 제공</div>
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-               <p v-for="n in 5" :key="n">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas
-                  eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus
-                  minima, porro labore.
-               </p>
+               서울특별시 영등포구에 있는 하중도. 이름처럼 섬이지만, 지금은 섬의 정체성을 잃은 지 오래다. 섬과 육지
+               사이는 거의 개울 수준이라서 샛강이라고도 한다. 하지만 올림픽대로로 인해 시가지가 격리되어 있어 섬으로서
+               고립감은 어느 정도 유지되고 있다. 실제로 여의도 내[1]에서는 '영등포'라 하면 샛강 건너편에 있는 '영등포구
+               본토(또는 영등포역 일대)'를 의미하는 경우가 많다.
             </q-card-section>
-
-            <q-card-actions align="right">
-               <q-btn flat label="Close" color="primary" v-close-popup></q-btn>
-            </q-card-actions>
          </q-card>
       </q-dialog>
       <q-inner-loading
@@ -99,9 +112,11 @@
 <script setup>
 import { computed, getCurrentInstance, onMounted, onUnmounted, ref, reactive, inject } from 'vue'
 import { loadScript, unloadScript } from 'vue-plugin-load-script'
+import { useSmap } from './composable/useSmap'
 
 const isLoading = ref(false)
 const { proxy } = getCurrentInstance()
+const { createMarker, createPolyline, getDistance, getWalkings } = useSmap()
 
 const currentPosition = ref([37.56649, 126.97831]) // 사용자 현재 위치. default: 서울시청
 const selectedPoints = ref([]) // 마커 좌표..
@@ -115,7 +130,6 @@ const totalTimes = computed(() => ((totalDistant.value / 4000) * 60).toFixed(1))
 /** S-MAP 불러오기 */
 let map = null // map 객체
 let markers = [] // marker
-let lineLayer = null // polyline 객체
 let polylineLayers = [] // polyline 객체
 
 const createMap = () => {
@@ -146,15 +160,7 @@ const createMap = () => {
          var slider = new L.Control.Zoomslider({ position: 'topright' })
          map.addControl(slider)
 
-         map.on('click', async (e) => {
-            await setSelectedPoints(e.latlng)
-            createMarker(e.latlng)
-         })
-
-         // var tileUrl = "https://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=getTileMap&key=bf5ab1d4a3294328a5957ac14244eb25&URL=http://98.33.2.95:7070/MapAppServer/Service?timg=emap_ldong/{z}/{j}/{k}/{x}_{y}.png";  //타일 url
-
-         // var_orverUserImageTaggingLayer = new L.Proj.TileLayer.DAWULGIS(tileUrl,{maxZoom:13, opacity:1, zIndex:3});
-         // map.addLayer(_orverUserImageTaggingLayer);
+         map.on('click', onClickMap)
 
          isLoading.value = false
       })
@@ -167,8 +173,22 @@ const createMap = () => {
 /** 일반지도, 위성지도 Change */
 const onMapChange = (mapType) => BaseMapChange(map, L.Dawul[mapType])
 
+const onClickMap = async (e) => {
+   // 포인트 정보 셋팅
+   let pointInfo = await getSelectedPointInfo(e.latlng)
+   selectedPoints.value.push(pointInfo)
+
+   // 마커 그리기
+   let marker = await createMarker(map, pointInfo)
+   markers.push(marker)
+
+   // polyline 그리기
+   let polylineLayer = await createPolyline(map, selectedPoints.value)
+   polylineLayers.push(polylineLayer)
+}
+
 /** 좌표 정보로 거리 계산 및 정보 저장 */
-const setSelectedPoints = async ({ lat, lng }) => {
+const getSelectedPointInfo = async ({ lat, lng }, cmd) => {
    let distance = 0
    let walkings = 0
    let address = null
@@ -186,8 +206,10 @@ const setSelectedPoints = async ({ lat, lng }) => {
    }
 
    isLoading.value = true
+
+   isLoading.value = true
    await proxy.$axios.smap
-      .useGetAddress(lat, lng)
+      .getAddress(lat, lng)
       .then((res) => {
          address = res.data.head
       })
@@ -197,44 +219,14 @@ const setSelectedPoints = async ({ lat, lng }) => {
       .finally(() => {
          isLoading.value = false
       })
-   //address = (await getAddressInfo(lat, lng)) || {}
-   //console.log(address)
 
-   selectedPoints.value.push({
+   return {
       lat: lat,
       lng: lng,
       address: address || {},
       dst: distance,
       walkings: walkings,
-   })
-}
-
-/** Marker 생성 */
-const createMarker = ({ lat, lng }) => {
-   let pointInfo = selectedPoints.value[selectedPoints.value.length - 1]
-   let content = pointInfo.dst + 'm<br/>총 : ' + totalDistant.value + 'm'
-   let marker = new L.Marker(new L.LatLng(lat, lng), {
-      icon: new L.Icon({
-         iconUrl: '/images/icons/pin_2.png',
-         iconAnchor: [11, 30], // 오프셋 (핀의 끝이 좌표로 매칭하기 위해 적용)
-      }),
-      title: content,
-   }).addTo(map)
-
-   marker.bindPopup(content, { minWidth: 20, offset: [0, -30] })
-   marker.togglePopup()
-   marker.on('click', function (e) {
-      detail.value = {
-         title: pointInfo.address.NEW_ADDR,
-      }
-      popup.value = true
-   })
-
-   markers.push(marker)
-
-   //testBound()
-
-   createPolyline()
+   }
 }
 
 /** 바운드 테스트 */
@@ -266,54 +258,50 @@ const onClearPolyline = () => {
    }
 }
 
-/** Polyline 그리기 */
-const onCreatePolyline = () => {
-   createPolyline()
-}
+/** 저장된 point 정보 불러와 marker, polyline 그리기 */
+const onLoadPoints = async () => {
+   // 기존 마커 삭제
+   onClearMarker()
 
-/** Polyline 생성 */
-/*
-const createPolyline = (latlng) => {
-
-	let coordinates = selectedPoints.value.map((item) => {
-		return [item.lat, item.lng]
-	})
-
-	let linedata = {
-		type: "Feature",
-		geometry: {
-			type: 'LineString',
-			coordinates: coordinates
-		},
-	}
-
-	// linedata 지도에 표현
-	lineLayer = new L.GeoJSON(linedata, {
-		style: () => {
-			return {
-				weight: 3,   				// 라인굵기
-				color : "#0100FF",  // 라인컬러
-				opacity : 1   			// 투명도
-			}
-		}
-	}).addTo(map)
-
-	//map.fitBounds(lineLayer.getBounds(),{ padding: [100, 100] });  // 레이어 크기만큼 지도 레벨조정및 위치이동	
-
-}
-*/
-
-const createPolyline = () => {
-   let latlngs = selectedPoints.value.map((item) => {
-      return [item.lat, item.lng]
+   // 포인트 정보 가져오기
+   await proxy.$axios.smap.getPointInfos().then((res) => {
+      selectedPoints.value = res.data
    })
 
-   let polylineLayer = L.polyline(latlngs, {
-      color: 'blue',
-      weight: 4,
-   }).addTo(map)
+   // marker 생성
+   selectedPoints.value.forEach((point) => {
+      console.log(point)
+      let marker = createMarker(map, point)
+      markers.push(marker)
+   })
+
+   // pollyline 생성
+   let polylineLayer = await createPolyline(map, selectedPoints.value)
    polylineLayers.push(polylineLayer)
-   //map.fitBounds(polyline.getBounds());
+
+   // 첫번째 포인트로 지도 이동
+   map.setView([selectedPoints.value[0].lat, selectedPoints.value[1].lng], 9)
+}
+
+// 지도 point 이동
+const onMovePoint = (lat, lng) => {
+   let zoom = 9
+   currentPosition.value = [lat, lng]
+
+   // 코스 정보가 있으면
+   // 현재 위치 포인트와 코스 첫번째 포인트로 거리를 환산하여 zoom level 조정한다. TODO : 공식 다시 작성
+   if (selectedPoints.value.length > 0) {
+      const distance = getDistance([selectedPoints.value[0].lat, selectedPoints.value[1].lng], [lat, lng])
+      if (distance > 1000) zoom = 8
+      if (distance > 3000) zoom = 7
+      if (distance > 7000) zoom = 6
+      if (distance > 16000) zoom = 5
+      if (distance > 50000) zoom = 4
+      if (distance > 100000) zoom = 3
+      console.log(distance, zoom)
+   }
+
+   map.setView([lat, lng], zoom) //지도 좌표 이동
 }
 
 // 현재 자신의 위치 정보 가져오기
@@ -321,35 +309,9 @@ const getCurrentPosition = () => {
    navigator.geolocation.getCurrentPosition((position) => {
       if (position) {
          currentPosition.value = [position.coords.latitude, position.coords.longitude]
-         console.log(currentPosition.value)
+         console.log('자신 위치 정보', currentPosition.value)
       }
    })
-}
-
-// 거리 구하기
-const getDistance = (a, b) => {
-   var lat1 = a[0]
-   var lng1 = a[1]
-   var lat2 = b[0]
-   var lng2 = b[1]
-
-   function deg2rad(deg) {
-      return deg * (Math.PI / 180)
-   }
-   var r = 6371 //지구의 반지름(km)
-   var dLat = deg2rad(lat2 - lat1)
-   var dLon = deg2rad(lng2 - lng1)
-   var a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
-   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-   var d = r * c // Distance in km
-   return Math.round(d * 1000)
-}
-
-/** 예상 걸음수 */
-const getWalkings = (dst) => {
-   return (1400 * dst) / 1000
 }
 
 onMounted(async () => {
@@ -362,7 +324,6 @@ onUnmounted(() => {
    if (map) map.remove()
 
    // load된 script 제거
-
    unloadScript('http://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapJs&key=')
       .then(() => {
          console.log('map unload')

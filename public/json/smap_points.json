@@ -1,0 +1,77 @@
+[
+   {
+      "lat": 37.52689964991929,
+      "lng": 126.91388945068516,
+      "address": {
+         "RETCODE": "0",
+         "code": "100",
+         "LEGAL_ADDR": "서울특별시 영등포구 여의도동 18-1",
+         "ADMIN_ADDR": "",
+         "format": "JSON",
+         "NEW_ADDR": "서울특별시 영등포구 국회대로62길 4",
+         "serviceName": "ReverseGeocoding",
+         "bslZonNo": "07235",
+         "point": "126.91453,37.52689"
+      },
+      "dst": 0,
+      "walkings": 0
+   },
+   {
+      "lat": 37.53133412846546,
+      "lng": 126.92116622170435,
+      "address": {
+         "RETCODE": "0",
+         "code": "100",
+         "LEGAL_ADDR": "서울특별시 영등포구 여의도동 13",
+         "ADMIN_ADDR": "",
+         "format": "JSON",
+         "NEW_ADDR": "서울특별시 영등포구 국회대로 800",
+         "serviceName": "ReverseGeocoding",
+         "bslZonNo": "07238",
+         "point": "126.92115,37.53095"
+      },
+      "dst": 809,
+      "walkings": 1132.6
+   },
+   {
+      "lat": 37.528284149119415,
+      "lng": 126.92415500429429,
+      "address": {
+         "RETCODE": "0",
+         "code": "100",
+         "LEGAL_ADDR": "서울특별시 영등포구 여의도동 16-1",
+         "ADMIN_ADDR": "",
+         "format": "JSON",
+         "NEW_ADDR": "서울특별시 영등포구 은행로 38",
+         "serviceName": "ReverseGeocoding",
+         "bslZonNo": "07242",
+         "point": "126.92341,37.52864"
+      },
+      "dst": 430,
+      "walkings": 602
+   },
+   {
+      "lat": 37.5259764254022,
+      "lng": 126.92041541380625,
+      "address": {},
+      "dst": 418,
+      "walkings": 585.2
+   },
+   {
+      "lat": 37.52782512776861,
+      "lng": 126.91877138478588,
+      "address": {
+         "RETCODE": "0",
+         "code": "100",
+         "LEGAL_ADDR": "서울특별시 영등포구 여의도동 15-22",
+         "ADMIN_ADDR": "",
+         "format": "JSON",
+         "NEW_ADDR": "서울특별시 영등포구 의사당대로 13",
+         "serviceName": "ReverseGeocoding",
+         "bslZonNo": "07237",
+         "point": "126.91909,37.52816"
+      },
+      "dst": 252,
+      "walkings": 352.8
+   }
+]

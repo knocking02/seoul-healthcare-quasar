@@ -2,7 +2,7 @@ import axios from '../axios'
 
 const smap = {
    /** 좌표 => 주소 변환 */
-   useGetAddress(lat, lng) {
+   getAddress(lat, lng) {
       let param = {
          cmd: 'getReverseGeocoding',
          key: '',
@@ -14,6 +14,11 @@ const smap = {
       }
 
       return axios.get('https://map.seoul.go.kr/smgis/apps/geocoding.do', param, false)
+   },
+
+   /** 저장된 points 정보 가져오기 */
+   getPointInfos() {
+      return axios.get('/json/smap_points.json')
    },
 }
 
