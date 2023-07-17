@@ -2,14 +2,19 @@
    <q-drawer v-model="isDrawerOpen" show-if-above bordered>
       <div class="q-pa-md" style="max-width: 350px">
          <q-list bordered separator>
+            <q-item clickable v-ripple to="/admin/smap">
+               <q-item-section>
+                  <q-item-label>S-MAP</q-item-label>
+               </q-item-section>
+            </q-item>
             <q-item clickable v-ripple to="/admin/amdchart">
                <q-item-section>
                   <q-item-label>AMD CHART</q-item-label>
                </q-item-section>
             </q-item>
-            <q-item clickable v-ripple to="/admin/smap">
+            <q-item clickable v-ripple to="/admin/echart">
                <q-item-section>
-                  <q-item-label>S-MAP</q-item-label>
+                  <q-item-label>ECHART</q-item-label>
                </q-item-section>
             </q-item>
             <q-item clickable v-ripple to="/admin/tab">

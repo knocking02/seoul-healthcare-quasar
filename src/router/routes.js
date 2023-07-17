@@ -17,6 +17,7 @@ import Editor from '@/views/sample/Editor.vue'
 import Calendar from '@/views/sample/Calendar.vue'
 import I18N from '@/views/sample/I18N.vue'
 import CKEditor from '@/views/sample/CKEditor.vue'
+import Echart from '@/views/sample/Echart.vue'
 //import i18n from '@/modules/i18n'
 //const { t: $t, d: $d, n: $n } = i18n.global
 
@@ -179,6 +180,16 @@ const routes = [
             component: CKEditor,
             meta: {
                name: 'CKEditor Test',
+               authType: 'admin',
+               layout: 'AdminLayout',
+            },
+         },
+         {
+            path: '/admin/echart',
+            name: 'Echart',
+            component: Echart,
+            meta: {
+               name: 'Echart Test',
                authType: 'admin',
                layout: 'AdminLayout',
             },

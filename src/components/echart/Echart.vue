@@ -3,27 +3,27 @@
 </template>
 
 <script setup>
-import BarChart from './components/BarChart.vue'
 import LineChart from './components/LineChart.vue'
+import BarChart from './components/BarChart.vue'
 import PieChart from './components/PieChart.vue'
 import { computed, ref } from 'vue'
 
 const props = defineProps({
    type: {
-      type: String,
+      type: String, // options.type = Bar | Line | Pie ...
       default: '',
    },
    options: {
-      type: Object, // options.type = Bar | Line | Pie ...
+      type: Object,
    },
 })
 
 const components = {
-   BarChart: BarChart,
-   LineChart: LineChart,
-   PieChart: PieChart,
+   lineChart: LineChart,
+   barChart: BarChart,
+   pieChart: PieChart,
 }
-const currentChart = computed(() => props.options.type + 'Chart')
+const currentChart = computed(() => props.type + 'Chart')
 </script>
 
 <style scoped></style>
